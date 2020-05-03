@@ -17,7 +17,7 @@ def validate_username(self, username):
 def validate_password(self, password):
     """
     PAssword
-        - more than 8 characters
+        - more than 8 less than 32 characters
         - have a upcase letter
         - have a special character
         - have a number
@@ -25,6 +25,8 @@ def validate_password(self, password):
 
     if len(password.data) < 8:
         raise ValueError("must be more than 8 characters")
+    elif len(password.data) > 32:
+        raise ValueError("must be less than 32 characters")
     elif re.search('[0-9]', password.data) is None:
         raise ValueError("Password must have a number")
     elif re.search('[A-Z]', password.data) is None:
@@ -42,5 +44,4 @@ class SignupForm(FlaskForm):
     password = PasswordField("Password", validators=[InputRequired(
         "Please enter your password"), EqualTo("confirm", message="password must match"), validate_password])
     confirm = PasswordField("Repeat Password")
-    remember_me = BooleanField("Remember me")
     submit = SubmitField("Sign In")
