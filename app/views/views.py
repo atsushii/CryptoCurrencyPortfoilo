@@ -25,9 +25,16 @@ def signup():
 
 @signup_page.route("/login", methods=["GET", "POST"])
 def login():
-    form = Login()
+    login_form = Login()
 
-    if request.method == "POST" and form.validate_on_submit():
-        return "login"
+    if request.method == "POST" and login_form.validate_on_submit():
+        # check if user already created a account
+        user_service = UserService()
+        error = user_service.login(request.form)
+        if error:
+            return redirect(url_for("signup_page.signup"))
 
-    return render_template("user/login.html", title="Sign Up", form=form)
+        # alredy exist same user name ot email
+        flash("User information is not existing Try again or please signup in signup page")
+
+    return render_template("user/login.html", title="Login", form=login_form)
