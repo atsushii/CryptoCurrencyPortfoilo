@@ -30,3 +30,13 @@ class User(db.Model):
             return "mail address"
 
         return True
+
+    @classmethod
+    def find_user_info(cls, name, email, password):
+        if User.query.filter_by(user_name=name).first() and \
+                User.query.filter_by(user_mail=email).first() and \
+                User.query.filter_by(
+                user_password=password).first():
+            return True
+        else:
+            return False
