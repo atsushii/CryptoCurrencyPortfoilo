@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, flash, u
 from app.forms.signup.forms import SignupForm
 from app.forms.login.forms import Login
 from app.forms.update.forms import Update
+from app.forms.delete.forms import Delete
 from app.utils.execute_user_db import UserService
 from app.utils.user_create_validation import UserCreateValidator
 
@@ -33,7 +34,6 @@ def login():
         user_service = UserService()
         error = user_service.login(request.form)
         if error:
-            # user name pass 別check 必要
             session["user_id"] = error
             session["login"] = True
             print(session["user_id"])
@@ -51,11 +51,25 @@ def login():
 def update():
     update_form = Update()
     if request.method == "POST" and update_form.validate_on_submit():
-        # updateされない
         user_service = UserService()
         error = user_service.update(request.form)
         if error:
             flash("Update was Success")
             return redirect(url_for("user_page.update"))
-        flash("Can't update")
+        flash(error)
     return render_template("user/update.html", title="Update", form=update_form)
+
+
+@user_page.route("/delete", methods=["GET", "POST"])
+def delete():
+    delete_form = Delete()
+    if request.method == "POST" and delete_form.validate_on_submit():
+        user_service = UserService()
+        error = user_service.delete(request.form)
+        if error == True:
+            flash("Thank you see you soon")
+            session.pop("user_id")
+            session["login"] = False
+            return redirect(url_for("user_page.signup"))
+        flash(error)
+    return render_template("user/delete.html", title="Delete", form=delete_form)
