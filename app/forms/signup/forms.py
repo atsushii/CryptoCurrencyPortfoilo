@@ -16,7 +16,7 @@ def validate_username(self, username):
 
 def validate_password(self, password):
     """
-    PAssword
+    Password
         - more than 8 less than 32 characters
         - have a upcase letter
         - have a special character
@@ -38,7 +38,7 @@ def validate_password(self, password):
 class SignupForm(FlaskForm):
     username = StringField("Username", validators=[
         InputRequired("Please enter your name."), validate_username])
-    email = EmailField("email", validators=[InputRequired(
+    email = EmailField("Email", validators=[InputRequired(
         "Please enter your email adress."), Email("Require a valid email address")])
 
     password = PasswordField("Password", validators=[InputRequired(

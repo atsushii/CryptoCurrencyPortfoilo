@@ -4,7 +4,7 @@ from wtforms.validators import Email, InputRequired, EqualTo
 from wtforms.fields.html5 import EmailField
 
 
-class Login(FlaskForm):
+class Delete(FlaskForm):
     username = StringField("Username", validators=[
         InputRequired("Please enter your name.")])
     email = EmailField("email", validators=[InputRequired(
@@ -14,5 +14,4 @@ class Login(FlaskForm):
         "Please enter your password"), EqualTo("confirm", message="password must match")])
     confirm = PasswordField("Repeat Password")
 
-    remember_me = BooleanField("Remember me")
-    submit = SubmitField("Login")
+    submit = SubmitField("Delete")
