@@ -1,0 +1,27 @@
+{% extends "base.html" %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %}
+<p>
+  {{ messages }}
+</p>
+{% endif %} {% endwith %}
+<div class="container">
+  <h1 class="my-4">Portfoilo</h1>
+  <h2>Total Value</h2>
+  <p><a href="{{ urf_for('add_coin') }}">Add Coin</a></p>
+  <table>
+    <tr>
+      <td>Coin Name</td>
+      <td>Number of holdings</td>
+      <td>Price</td>
+      <td>Change</td>
+    </tr>
+    <tr>
+      <td>""</td>
+      <td>""</td>
+      <td>""</td>
+      <td>""</td>
+    </tr>
+  </table>
+</div>
+
+{% endblock %}

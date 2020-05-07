@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %}
+<p>
+  {{ messages }}
+</p>
+{% endif %} {% endwith %}
+<div class="container">
+  <h1 class="my-4">Add coin</h1>
+</div>
+{% endblock %}
