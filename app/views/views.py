@@ -50,7 +50,6 @@ def login():
 @user_page.route("/update", methods=["GET", "POST"])
 def update():
     update_form = Update()
-
     if request.method == "POST" and update_form.validate_on_submit():
         # updateされない
         user_service = UserService()
@@ -58,5 +57,5 @@ def update():
         if error:
             flash("Update was Success")
             return redirect(url_for("user_page.update"))
-        flash(error)
+        flash("Can't update")
     return render_template("user/update.html", title="Update", form=update_form)
