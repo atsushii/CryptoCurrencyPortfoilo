@@ -32,11 +32,25 @@ class User(db.Model):
         return True
 
     @classmethod
-    def find_user_info(cls, name, email, password):
-        if User.query.filter_by(user_name=name).first() and \
-                User.query.filter_by(user_mail=email).first() and \
-                User.query.filter_by(
-                user_password=password).first():
-            return True
-        else:
-            return False
+    def find_user_info(cls, name, mail, password):
+        user = User.query.filter_by(user_name=name).first()
+        if user is not None and user.user_name == name and user.user_mail == mail and user.user_password == password:
+            return user.user_id
+
+        return False
+
+    @classmethod
+    def update_user_info(cls, user_id):
+        user = User.query.filter_by(user_id=user_id).first()
+        if user is not None:
+            return user
+        return False
+
+    @classmethod
+    def delete_user_info(cls, user_id, name, mail, password):
+        user = User.query.filter_by(user_id=user_id).first()
+        if user is not None and user.user_name == name and user.user_mail == mail and user.user_password == password:
+            return user
+
+        return False
+
