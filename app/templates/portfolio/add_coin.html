@@ -5,6 +5,11 @@ get_flashed_messages() %} {% if messages %}
 </p>
 {% endif %} {% endwith %}
 <div class="container">
-  <h1 class="my-4">Add coin</h1>
+  <h2 class="my-4">Add Coin</h1>
+  <form action="{{ url_for('user_page.add_coin') }}" method="post">
+    <input type="text" name="coin_name" />
+    <input type="submit" value="Add" />
+  </form>
 </div>
+
 {% endblock %}
