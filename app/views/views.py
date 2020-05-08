@@ -73,3 +73,15 @@ def delete():
             return redirect(url_for("user_page.signup"))
         flash(error)
     return render_template("user/delete.html", title="Delete", form=delete_form)
+
+
+@user_page.route("/portfolio", methods=["GET"])
+def user_portfolio():
+    return render_template("portfolio/portfolio.html", title="Portfolio")
+
+
+@user_page.route("/add_coin", methods=["GET"])
+def add_coin():
+    # searh coin name from db
+    # add coin name to helper table
+    # if user access portfolio page call api
