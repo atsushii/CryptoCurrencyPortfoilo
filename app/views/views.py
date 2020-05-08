@@ -77,7 +77,7 @@ def delete():
 
 @user_page.route("/portfolio", methods=["GET"])
 def user_portfolio():
-    return render_template("portfolio/portfolio.html", title="Portfolio")
+    return render_template("portfolio/user_portfolio.html", title="Portfolio")
 
 
 @user_page.route("/add_coin", methods=["POST", "GET"])
@@ -89,10 +89,7 @@ def add_coin():
             session["user_id"], request.form["coin_name"].upper())
         if error == True:
             flash("complete")
-            # fix relational db
-            # cant add db to helper db
-            # add redirect
-
+        flash(error)
     return render_template("portfolio/add_coin.html", title="Portfolio")
 
     # searh coin name from db
