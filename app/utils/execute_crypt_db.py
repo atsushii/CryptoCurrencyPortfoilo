@@ -8,22 +8,20 @@ from flask import session
 
 class PortfolioService():
 
-    def register(self, user_id, coin_name):
+    def register(self, user_id, crypt_name):
         """
         Insert currency data
         """
         validator = CryptValidation()
-        error = validator.validate(coin_name)
-        if not error:
+        # return crypt and user data
+        result = validator.validate(user_id, crypt_name)
+        if not result:
             return "Cant find currency name Try again"
 
         try:
-            u = User()
-            c = Crypt()
-            u.crypt.append(c)
-            db.session.add(u)
+            result[0].portfolio.append(result[1])
             db.session.commit()
-        except ImportError:
+        except IntegrityError:
             db.session.roleback()
             return "db error"
 
