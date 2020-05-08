@@ -4,7 +4,7 @@ from app.forms.login.forms import Login
 from app.forms.update.forms import Update
 from app.forms.delete.forms import Delete
 from app.utils.execute_user_db import UserService
-from app.utils.user_create_validation import UserCreateValidator
+from app.utils.execute_crypt_db import PortfolioService
 
 user_page = Blueprint("user_page", __name__,
                       template_folder="templates")
@@ -80,8 +80,21 @@ def user_portfolio():
     return render_template("portfolio/portfolio.html", title="Portfolio")
 
 
-@user_page.route("/add_coin", methods=["GET"])
+@user_page.route("/add_coin", methods=["POST", "GET"])
 def add_coin():
+
+    if request.method == "POST":
+        portfolio_service = PortfolioService()
+        error = portfolio_service.register(
+            session["user_id"], request.form["coin_name"].upper())
+        if error == True:
+            flash("complete")
+            # fix relational db
+            # cant add db to helper db
+            # add redirect
+
+    return render_template("portfolio/add_coin.html", title="Portfolio")
+
     # searh coin name from db
     # add coin name to helper table
     # if user access portfolio page call api
