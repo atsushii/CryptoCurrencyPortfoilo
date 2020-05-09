@@ -26,3 +26,12 @@ class PortfolioService():
             return "db error"
 
         return True
+
+    def get_user_portfolio(self, user_id):
+        """
+        Get user's currency data
+        """
+        validator = CryptValidation()
+        result = validator.validate_portfolio_data(user_id)
+
+        return result
