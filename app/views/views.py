@@ -5,6 +5,7 @@ from app.forms.update.forms import Update
 from app.forms.delete.forms import Delete
 from app.utils.execute_user_db import UserService
 from app.utils.execute_crypt_db import PortfolioService
+from app.utils.execute_api import API
 
 user_page = Blueprint("user_page", __name__,
                       template_folder="templates")
@@ -81,8 +82,9 @@ def user_portfolio():
         portfolio_service = PortfolioService()
         data = portfolio_service.get_user_portfolio(session["user_id"])
         if data:
-            # give data to portfolio.html
-            # need to get currency name from crypt db using [data.crypt_id]
+            api = API()
+            api.call_api(data)
+            # finish until getting current currency data using api
             return render_template("portfolio/user_portfolio.html", title="Portfolio", data=data)
 
         return render_template("portfolio/user_portfolio.html", title="Portfolio")
@@ -100,7 +102,3 @@ def add_coin():
             redirect(url_for("user_page.add_coin"))
         flash(error)
     return render_template("portfolio/add_coin.html", title="Portfolio")
-
-    # searh coin name from db
-    # add coin name to helper table
-    # if user access portfolio page call api
