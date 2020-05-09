@@ -77,7 +77,15 @@ def delete():
 
 @user_page.route("/portfolio", methods=["GET"])
 def user_portfolio():
-    return render_template("portfolio/user_portfolio.html", title="Portfolio")
+    if request.method == "GET":
+        portfolio_service = PortfolioService()
+        data = portfolio_service.get_user_portfolio(session["user_id"])
+        if data:
+            # give data to portfolio.html
+            # need to get currency name from crypt db using [data.crypt_id]
+            return render_template("portfolio/user_portfolio.html", title="Portfolio", data=data)
+
+        return render_template("portfolio/user_portfolio.html", title="Portfolio")
 
 
 @user_page.route("/add_coin", methods=["POST", "GET"])
@@ -89,6 +97,7 @@ def add_coin():
             session["user_id"], request.form["coin_name"].upper())
         if error == True:
             flash("complete")
+            redirect(url_for("user_page.add_coin"))
         flash(error)
     return render_template("portfolio/add_coin.html", title="Portfolio")
 
