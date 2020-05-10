@@ -1,5 +1,7 @@
 from app.config import Config
+from app.utils.crypt_validation import CryptValidation
 import urllib.request
+import json
 
 
 class API():
@@ -10,4 +12,4 @@ class API():
     def call_api(self, currency):
         url = self.api_key.format(",".join(currency))
 
-        print(urllib.request.urlopen(url).read())
+        return json.load(urllib.request.urlopen(url))

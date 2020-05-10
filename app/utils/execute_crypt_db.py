@@ -22,7 +22,7 @@ class PortfolioService():
             result[0].portfolio.append(result[1])
             db.session.commit()
         except IntegrityError:
-            db.session.roleback()
+            db.session.rollback()
             return "db error"
 
         return True
