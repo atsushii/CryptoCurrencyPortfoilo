@@ -83,7 +83,8 @@ def user_portfolio():
         data = portfolio_service.get_user_portfolio(session["user_id"])
         if data:
             api = API()
-            api.call_api(data)
+            data = api.call_api(data)
+
             # finish until getting current currency data using api
             return render_template("portfolio/user_portfolio.html", title="Portfolio", data=data)
 
