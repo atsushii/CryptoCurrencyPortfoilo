@@ -83,15 +83,16 @@ def user_portfolio():
         data = portfolio_service.get_user_portfolio(session["user_id"])
         if data:
             api = API()
+            "data[0]: currency name, data[1]: number of hold currency"
             result = api.call_api(data[0])
-            result = api.data_process(result)
-            return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1])
+            result, total_value = api.data_process(result, data[1])
+            return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1], total_value=total_value)
 
         return render_template("portfolio/user_portfolio.html", title="Portfolio")
 
 
-@user_page.route("/add_coin", methods=["POST", "GET"])
-def add_coin():
+@user_page.route("/register_currency", methods=["POST", "GET"])
+def register_currency():
 
     if request.method == "POST":
         portfolio_service = PortfolioService()
@@ -99,6 +100,34 @@ def add_coin():
             session["user_id"], request.form["coin_name"].upper(), request.form["num_of_currency"])
         if error == True:
             flash("complete")
-            redirect(url_for("user_page.add_coin"))
+            return redirect(url_for("user_page.register_currency"))
         flash(error)
-    return render_template("portfolio/add_coin.html", title="Portfolio")
+    return render_template("portfolio/register_currency.html", title="Portfolio")
+
+
+@user_page.route("/update_currency/<currency_name>", methods=["POST", "GET"])
+def update_currency(currency_name):
+
+    if request.method == "POST":
+        portfolio_service = PortfolioService()
+        result = portfolio_service.update_currency_data(
+            session["user_id"], request.form["coin_name"].upper(), request.form["num_of_currency"])
+        if result:
+            flash("Updated!")
+            return redirect(url_for("user_page.user_portfolio"))
+        flash("Failer Try Again!")
+    return render_template("portfolio/update_currency.html", title="Update", currency_name=currency_name)
+
+
+@user_page.route("/delete_currency/<currency_name>", methods=["POST", "GET"])
+def delete_currency(currency_name):
+
+    if request.method == "POST":
+        portfolio_service = PortfolioService()
+        result = portfolio_service.delete_currency_data(
+            session["user_id"], request.form["coin_name"].upper())
+        if result:
+            flash("Deleted!")
+            return redirect(url_for("user_page.user_portfolio"))
+        flash("Failer Try Again!")
+    return render_template("portfolio/delete_currency.html", title="Delete", currency_name=currency_name)
