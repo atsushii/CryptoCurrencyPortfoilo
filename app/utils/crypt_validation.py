@@ -24,13 +24,17 @@ class CryptValidation():
         Check user has currency data in db
         """
         # get current portfolio info
+        name_of_currency_list = []
+        num_of_currency_list = []
         currency = []
         user = User.update_user_info(user_id)
-        user_portfolio = user.portfolio
-        for i in user_portfolio:
-            currency.append(i.crypt_name)
-
-        if currency:
-            return currency
-
-        return False
+        user_data = user.crypts
+        num_data = user.user_crypt
+        if not user_data:
+            return False
+        for name, num in zip(user_data, num_data):
+            name_of_currency_list.append(name.crypt_name)
+            num_of_currency_list.append(num.num_of_currency)
+        currency.append(name_of_currency_list)
+        currency.append(num_of_currency_list)
+        return currency
