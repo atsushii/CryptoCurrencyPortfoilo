@@ -83,10 +83,9 @@ def user_portfolio():
         data = portfolio_service.get_user_portfolio(session["user_id"])
         if data:
             api = API()
-            data = api.call_api(data)
-
-            # finish until getting current currency data using api
-            return render_template("portfolio/user_portfolio.html", title="Portfolio", data=data)
+            result = api.call_api(data[0])
+            result = api.data_process(result)
+            return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1])
 
         return render_template("portfolio/user_portfolio.html", title="Portfolio")
 
@@ -97,7 +96,7 @@ def add_coin():
     if request.method == "POST":
         portfolio_service = PortfolioService()
         error = portfolio_service.register(
-            session["user_id"], request.form["coin_name"].upper())
+            session["user_id"], request.form["coin_name"].upper(), request.form["num_of_currency"])
         if error == True:
             flash("complete")
             redirect(url_for("user_page.add_coin"))
