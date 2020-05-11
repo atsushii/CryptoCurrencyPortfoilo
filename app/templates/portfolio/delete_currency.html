@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block content %} {% with messages =
+    get_flashed_messages() %} {% if messages %}
+    <p>
+      {{ messages }}
+    </p>
+    {% endif %} {% endwith %}
+    <div class="container">
+      <h2 class="my-4">Delete currency</h1>
+      <form action="" method="post">
+        <p>currency name: <input type="text" name="coin_name" value="{{ currency_name }}"/></p></br>
+        <input type="submit" value="Delete" />
+      </form>
+    </div>
+    
+    {% endblock %}
+    

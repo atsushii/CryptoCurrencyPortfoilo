@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %}
+<p>
+  {{ messages }}
+</p>
+{% endif %} {% endwith %}
+<div class="container">
+  <h1 class="my-4">Portfoilo</h1>
+  <h2>Total Value: ${{ total_value }}</h2>
+  <p>
+    <a href="{{ url_for('user_page.register_currency') }}">Register Currency</a>
+  </p>
+  <table>
+    <tr>
+      <td>Currency</td>
+      <td>holdings</td>
+      <td>Price</td>
+      <td>Change</td>
+    </tr>
+    {% for currency, num_of_hold in zip(result, num_of_holds) %}
+    <tr>
+      <td>
+        {{ currency["symbol"] }}
+        <a
+          href="{{ url_for('user_page.update_currency', currency_name=currency['symbol']) }}"
+          >Add</a
+        >
+        <a
+          href="{{ url_for('user_page.delete_currency', currency_name=currency['symbol']) }}"
+          >Delete</a
+        >
+      </td>
+      <td>
+        {{ num_of_hold }}
+      </td>
+      <td>${{ currency["price"] * num_of_hold }}</td>
+      <td>{{ currency["price_change_pct"] }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% endblock %}
