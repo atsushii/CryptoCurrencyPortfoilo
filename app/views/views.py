@@ -37,10 +37,8 @@ def login():
         if error:
             session["user_id"] = error
             session["login"] = True
-            print(session["user_id"])
-            print(session["login"])
             flash("Welcome back")
-            return redirect(url_for("user_page.login"))
+            return redirect(url_for("user_page.user_portfolio"))
 
         # alredy exist same user name ot email
         flash("User information is not existing Try again or please signup in signup page")
@@ -53,10 +51,10 @@ def update():
     update_form = Update()
     if request.method == "POST" and update_form.validate_on_submit():
         user_service = UserService()
-        error = user_service.update(request.form)
+        error = user_service.update(request.form, session["user_id"])
         if error:
             flash("Update was Success")
-            return redirect(url_for("user_page.update"))
+            return redirect(url_for("user_page.account_page"))
         flash(error)
     return render_template("user/update.html", title="Update", form=update_form)
 
@@ -66,14 +64,33 @@ def delete():
     delete_form = Delete()
     if request.method == "POST" and delete_form.validate_on_submit():
         user_service = UserService()
-        error = user_service.delete(request.form)
+        error = user_service.delete(request.form, session["user_id"])
         if error == True:
             flash("Thank you see you soon")
             session.pop("user_id")
             session["login"] = False
+            flash("Thank you")
             return redirect(url_for("user_page.signup"))
         flash(error)
     return render_template("user/delete.html", title="Delete", form=delete_form)
+
+
+@user_page.route("/logout", methods=["GET", "POST"])
+def logout():
+    flash("logout! see you soon")
+    session.pop("user_id")
+    session["login"] = False
+    return redirect(url_for("user_page.login"))
+
+
+@user_page.route("/account_page", methods=["GET"])
+def account_page():
+    if request.method == "GET":
+        user_service = UserService()
+        user = user_service.get_user_info_by_user_id(session["user_id"])
+        if user:
+            return render_template("user/account_page.html", title="My Information", user=user)
+    return redirect(url_for("user_page.signup"))
 
 
 @user_page.route("/portfolio", methods=["GET"])
@@ -88,7 +105,7 @@ def user_portfolio():
             result, total_value = api.data_process(result, data[1])
             return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1], total_value=total_value)
 
-        return render_template("portfolio/user_portfolio.html", title="Portfolio")
+    return render_template("portfolio/user_portfolio.html", title="Portfolio")
 
 
 @user_page.route("/register_currency", methods=["POST", "GET"])
@@ -100,9 +117,9 @@ def register_currency():
             session["user_id"], request.form["coin_name"].upper(), request.form["num_of_currency"])
         if error == True:
             flash("complete")
-            return redirect(url_for("user_page.register_currency"))
+            return redirect(url_for("user_page.user_portfolio"))
         flash(error)
-    return render_template("portfolio/register_currency.html", title="Portfolio")
+    return render_template("portfolio/register_currency.html", title="Register")
 
 
 @user_page.route("/update_currency/<currency_name>", methods=["POST", "GET"])
