@@ -4,7 +4,6 @@ from app.models.crypt_db import Crypt
 from app.models.user_crypt_db import UserCrypt
 from app.utils.crypt_validation import CryptValidation
 from sqlalchemy.orm.exc import FlushError
-from flask import session
 
 
 class PortfolioService():

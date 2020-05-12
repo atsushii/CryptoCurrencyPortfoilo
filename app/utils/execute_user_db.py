@@ -2,7 +2,6 @@ from app import db
 from app.models.user_db import User
 from app.utils.user_create_validation import UserCreateValidator
 from sqlalchemy.exc import IntegrityError
-from flask import session
 
 
 class UserService():
@@ -37,11 +36,11 @@ class UserService():
                                    form_data["email"],
                                    form_data["password"])
 
-    def update(self, form_data):
+    def update(self, form_data, user_id):
         """
         Update user data
         """
-        user = User.update_user_info(session["user_id"])
+        user = User.update_user_info(user_id)
 
         if not user:
             return "Can't find user id"
@@ -57,23 +56,38 @@ class UserService():
 
         return True
 
-    def delete(self, form_data):
+    def delete(self, form_data, user_id):
         """
         Delete user data
         """
-        user = User.delete_user_info(session["user_id"],
+        user = User.delete_user_info(user_id,
                                      form_data["username"],
                                      form_data["email"],
                                      form_data["password"])
-
         if not user:
             return "User information doesn't match try again"
+        user_portfolio = user.crypts
 
         try:
+            user_portfolio.clear()
+            db.session.add(user)
+            db.session.commit()
             db.session.delete(user)
             db.session.commit()
+
         except IntegrityError:
             db.session.rollback()
             return "db error"
 
         return True
+
+    def get_user_info_by_user_id(self, user_id):
+        """
+        Get user infomation for showing info in user desplay
+        """
+        user = User.update_user_info(user_id)
+
+        if not user:
+            return "Can't find user"
+
+        return user
