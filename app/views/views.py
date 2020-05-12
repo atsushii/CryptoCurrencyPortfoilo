@@ -77,7 +77,7 @@ def delete():
 
 @user_page.route("/logout", methods=["GET", "POST"])
 def logout():
-    flash("logout! see you soon")
+    flash("logout! see you soon!")
     session.pop("user_id")
     session["login"] = False
     return redirect(url_for("user_page.login"))
