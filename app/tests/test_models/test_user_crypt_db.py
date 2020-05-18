@@ -8,5 +8,5 @@ class TestCryptDB(unittest.TestCase):
         is_empty_data = Crypt.find_currency_name(crypt_name="BTC")
         empty_data = Crypt.find_currency_name(crypt_name="ADA")
 
-        assert assertIsNone(empty_data)
-        assert assertIsNotNone(is_empty_data)
+        self.assertIsNone(empty_data)
+        self.assertIsNotNone(is_empty_data)
