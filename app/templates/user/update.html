@@ -1,60 +1,66 @@
-{% extends "base.html" %} {% block content %}
-{% with messages = get_flashed_messages() %} {% if
-  messages %}
-  <p>
-    {{ messages }}
-  </p>
-  {% endif %} {% endwith %}
+{% extends "base.html" %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %}
+<p>
+  {{ messages }}
+</p>
+{% endif %} {% endwith %}
 <div class="container">
-  <h1 class="my-4">Update</h1>
-  <form action="" method="post">
-    {{ form.hidden_tag() }}
-    <div class="form-row">
-      <div class="col-xs-7 col-sm-6 col-lg-8">
-        <p>
-          {{ form.new_username.label }}<br />
-          {{ form.new_username(size=10) }}        
-          {% if form.new_username.errors %}
-            <ul class=username_errors>
-              {% for error in form.new_username.errors %}
-                <li>{{ error }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        </p>
+  <div class="card o-hidden border-0 shadow-lg my-5">
+    <div class="card-body p-0">
+      <!-- Nested Row within Card Body -->
+      <div class="row">
+        <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+        <div class="col-lg-7">
+          <div class="p-5">
+            <div class="text-center">
+              <h1 class="h4 text-gray-900 mb-4">Update an Account</h1>
+            </div>
+            <form action="" method="post" class="user">
+              {{ form.hidden_tag() }}
+              <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  {{ form.new_username.label }}<br />
+                  {{ form.new_username(size=10, class="form-control
+                  form-control-user", placeholder="New User Name") }} {% if
+                  form.new_username.errors %}
+                  <ul class="username_errors">
+                    {% for error in form.new_username.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                {{ form.new_email.label }}<br />
+                {{ form.new_email(class="form-control form-control-user",
+                placeholder="New Email Address") }}
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  {{ form.new_password.label }}<br />
+                  {{ form.new_password(size=32, class="form-control
+                  form-control-user", placeholder="New Password") }} {% if
+                  form.new_password.errors %}
+                  <ul class="password_errors">
+                    {% for error in form.new_password.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+                <div class="col-sm-6">
+                  {{ form.confirm.label }}<br />
+                  {{ form.confirm(size=32, class="form-control
+                  form-control-user", placeholder="Repeat Password") }}
+                </div>
+              </div>
+              {{ form.submit(class="btn btn-primary btn-user btn-block") }}
+            </form>
+          </div>
+        </div>
       </div>
-      <div class="col-xs-7 col-sm-6 col-lg-8">
-        <p>
-          {{ form.new_email.label }}<br />
-          {{ form.new_email }}
-        </p>
-      </div>
-      <div class="col-xs-7 col-sm-6 col-lg-8">
-        <p>
-          {{ form.new_password.label }}<br />
-          {{ form.new_password(size=32) }}
-          {% if form.new_password.errors %}
-          <ul class=password_errors>
-            {% for error in form.new_password.errors %}
-              <li>{{ error }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-        </p>
-      </div>
-      <div class="col-xs-7 col-sm-6 col-lg-8">
-
-        <p>
-          {{ form.confirm.label }}<br />
-          {{ form.confirm(size=32) }}<br />
-        </p>
-      </div>
-      <div class="col-xs-7 col-sm-6 col-lg-8">
-        <p>
-          {{ form.submit() }}
-        </p>
-      </div>  
     </div>
-  </form>
+  </div>
 </div>
 {% endblock %}

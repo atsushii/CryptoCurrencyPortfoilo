@@ -1,44 +1,100 @@
-{% extends "base.html" %} {% block content %}
-{% with messages = get_flashed_messages() %} {% if
-  messages %}
-  <p>
-    {{ messages }}
-  </p>
-  {% endif %} {% endwith %}
+{% extends "base.html" %} {% block content %} {% with messages =
+get_flashed_messages() %} {% if messages %}
+<p>
+  {{ messages }}
+</p>
+{% endif %} {% endwith %}
+
 <div class="container">
-  <h1 class="my-4">Login</h1>
-  <form action="" method="post">
-    {{ form.hidden_tag() }}
-    <div class="form-row">
-      <div class="col-xs-7 col-sm-6 col-lg-8">
-        <p>
-          {{ form.username.label }}<br />
-          {{ form.username(size=10) }}
-        </p>
+  <!-- Outer Row -->
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Login!</h1>
+                </div>
+                <form action="" method="post" class="user">
+                  {{ form.hidden_tag() }}
+                  <div class="form-group">
+                    {{ form.username.label }}<br />
+                    {{ form.username(size=10, class="form-control
+                    form-control-user", placeholder="Enter Email User Name") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.email.label }}<br />
+                    {{ form.email(class="form-control form-control-user",
+                    placeholder="Enter Email Address...") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.password.label }}<br />
+                    {{ form.password(size=32, class="form-control
+                    form-control-user", placeholder="Password") }}
+                  </div>
+                  <div class="form-group">
+                    {{ form.confirm.label }}<br />
+                    {{ form.confirm(size=32, class="form-control
+                    form-control-user", placeholder="Repeat Password") }}
+                  </div>
+                  <div class="form-group">
+                    <div class="custom-control custom-checkbox small">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="customCheck"
+                      />
+                      <label class="custom-control-label" for="customCheck"
+                        >Remember Me</label
+                      >
+                    </div>
+                  </div>
+                  {{ form.submit(class="btn btn-primary btn-user btn-block") }}
+                  <hr />
+                  <a
+                    href="index.html"
+                    class="btn btn-google btn-user btn-block"
+                  >
+                    <i class="fab fa-google fa-fw"></i> Login with Google
+                  </a>
+                  <a
+                    href="index.html"
+                    class="btn btn-facebook btn-user btn-block"
+                  >
+                    <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                  </a>
+                </form>
+                <hr />
+                <div class="text-center">
+                  <a class="small" href="forgot-password.html"
+                    >Forgot Password?</a
+                  >
+                </div>
+                <div class="text-center">
+                  <a class="small" href="{{ url_for('user_page.signup') }}"
+                    >Create an Account!</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <div class="col-xs-7 col-sm-6 col-lg-8">
-      <p>
-        {{ form.email.label }}<br />
-        {{ form.email }}
-      </p>
     </div>
-    <div class="col-xs-7 col-sm-6 col-lg-8">
-      <p>
-        {{ form.password.label }}<br />
-        {{ form.password(size=32) }}
-      </p>
-    </div>
-    <div class="col-xs-7 col-sm-6 col-lg-8">
-      <p>
-        {{ form.confirm.label }}<br />
-        {{ form.confirm(size=32) }}
-      </p>
-    </div>
-    <div class="col-xs-7 col-sm-6 col-lg-8">
-      <p>
-        {{ form.submit() }}
-      </p>
-    </div>
-  </form>
+  </div>
 </div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
 {% endblock %}
