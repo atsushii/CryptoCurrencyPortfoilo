@@ -5,48 +5,44 @@ get_flashed_messages() %} {% if messages %}
 </p>
 {% endif %} {% endwith %}
 <div class="container">
-  <div>
-    CryptoPortfolio:
-    <a href="{{ url_for('user_page.user_portfolio') }}">Portfolio</a>
-  </div>
-  <div>
-    Logout:
-    <a href="{{ url_for('user_page.logout') }}">Logout</a>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-6">
-      <div class="well well-sm">
-        <div class="row">
-          <div class="col-sm-6 col-md-8">
-            <h4>
-              {{ user.user_name }}
-            </h4>
-            <p>
-              <i class="glyphicon glyphicon-envelope"></i>{{ user.user_mail }}
-            </p>
-            <!-- Split button -->
-            <div class="btn-group">
-              <button type="button" class="btn btn-primary">
-                Edit
-              </button>
-              <button
-                type="button"
-                class="btn btn-primary dropdown-toggle"
-                data-toggle="dropdown"
-              >
-                <span class="caret"></span><span class="sr-only">Edit</span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li>
-                  <a href="{{ url_for('user_page.update') }}"
-                    >Update Informaton</a
+  <!-- Outer Row -->
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <!-- Nested Row within Card Body -->
+          <div class="row">
+            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">Account</h1>
+                </div>
+                <div class="text-center">
+                  <p>User Name: {{ user.user_name }}</p>
+                </div>
+                <div class="text-center">
+                  <p>Mail: {{ user.user_mail }}</p>
+                </div>
+                <div class="text-center">
+                  <a class="small" href="{{ url_for('user_page.update') }}"
+                    >Update Account Information</a
                   >
-                </li>
-                <li>
-                  <a href="{{ url_for('user_page.delete') }}">Delete Account</a>
-                </li>
-              </ul>
+                </div>
+                <div class="text-center">
+                  <a class="small" href="{{ url_for('user_page.delete') }}"
+                    >Delete Account</a
+                  >
+                </div>
+                <div class="text-center">
+                  <a
+                    class="small"
+                    href="{{ url_for('user_page.user_portfolio') }}"
+                  >
+                    >Back to Portfolio</a
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>
