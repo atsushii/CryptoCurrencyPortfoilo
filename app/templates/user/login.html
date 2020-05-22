@@ -70,7 +70,9 @@ get_flashed_messages() %} {% if messages %}
                 </form>
                 <hr />
                 <div class="text-center">
-                  <a class="small" href="forgot-password.html"
+                  <a
+                    class="small"
+                    href="{{ url_for('user_page.forgot_password') }}"
                     >Forgot Password?</a
                   >
                 </div>
@@ -88,13 +90,4 @@ get_flashed_messages() %} {% if messages %}
   </div>
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
 {% endblock %}
