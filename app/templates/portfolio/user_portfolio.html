@@ -497,7 +497,8 @@ get_flashed_messages() %} {% if messages %}
                   </tr>
                 </tfoot>
                 <tbody>
-                  {% for currency, num_of_hold in zip(result, num_of_holds) %}
+                  {% if result and num_of_holds %} {% for currency, num_of_hold
+                  in zip(result, num_of_holds) %}
                   <tr>
                     <td>
                       {{ currency["symbol"] }}
@@ -514,7 +515,7 @@ get_flashed_messages() %} {% if messages %}
                     <td>${{ currency["price"] * num_of_hold }}</td>
                     <td>{{ currency["price_change_pct"] }}%</td>
                   </tr>
-                  {% endfor %}
+                  {% endfor %} {% endif %}
                 </tbody>
               </table>
             </div>
