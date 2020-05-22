@@ -1,9 +1,4 @@
-{% extends "base.html" %} {% block content %} {% with messages =
-get_flashed_messages() %} {% if messages %}
-<p>
-  {{ messages }}
-</p>
-{% endif %} {% endwith %}
+{% extends "base.html" %} {% block content %}
 <div class="container">
   <div class="card o-hidden border-0 shadow-lg my-5">
     <div class="card-body p-0">
@@ -13,6 +8,11 @@ get_flashed_messages() %} {% if messages %}
         <div class="col-lg-7">
           <div class="p-5">
             <div class="text-center">
+              {% with messages = get_flashed_messages() %} {% if messages %}
+              <p>
+                {{ messages }}
+              </p>
+              {% endif %} {% endwith %}
               <h1 class="h4 text-gray-900 mb-4">Delete an Account</h1>
             </div>
             <form action="" method="post" class="user">
@@ -57,6 +57,11 @@ get_flashed_messages() %} {% if messages %}
               </div>
               {{ form.submit(class="btn btn-primary btn-user btn-block") }}
             </form>
+            <div class="text-center">
+              <a class="small" href="{{ url_for('user_page.account_page') }}">
+                >Back to Account Page</a
+              >
+            </div>
           </div>
         </div>
       </div>
