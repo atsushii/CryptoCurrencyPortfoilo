@@ -83,6 +83,11 @@ def logout():
     return redirect(url_for("user_page.login"))
 
 
+@user_page.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    return render_template("user/forgot_password.html")
+
+
 @user_page.route("/account_page", methods=["GET"])
 def account_page():
     if request.method == "GET":
@@ -98,14 +103,17 @@ def user_portfolio():
     if request.method == "GET":
         portfolio_service = PortfolioService()
         data = portfolio_service.get_user_portfolio(session["user_id"])
-        if data:
+        user_service = UserService()
+        user = user_service.get_user_info_by_user_id(session["user_id"])
+
+        if data and user:
             api = API()
             "data[0]: currency name, data[1]: number of hold currency"
             result = api.call_api(data[0])
             result, total_value = api.data_process(result, data[1])
-            return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1], total_value=total_value)
+            return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1], total_value=total_value, user=user)
 
-    return render_template("portfolio/user_portfolio.html", title="Portfolio")
+    return render_template("portfolio/user_portfolio.html", title="Portfolio", result="", num_of_holds="", total_value=0, user=user)
 
 
 @user_page.route("/register_currency", methods=["POST", "GET"])
