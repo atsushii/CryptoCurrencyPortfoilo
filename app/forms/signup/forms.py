@@ -44,4 +44,4 @@ class SignupForm(FlaskForm):
     password = PasswordField("Password", validators=[InputRequired(
         "Please enter your password"), EqualTo("confirm", message="password must match"), validate_password])
     confirm = PasswordField("Repeat Password")
-    submit = SubmitField("Sign In")
+    submit = SubmitField("Register Account")
