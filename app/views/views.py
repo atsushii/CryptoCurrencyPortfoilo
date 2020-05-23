@@ -48,6 +48,9 @@ def login():
 
 @user_page.route("/update", methods=["GET", "POST"])
 def update():
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
+
     update_form = Update()
     if request.method == "POST" and update_form.validate_on_submit():
         user_service = UserService()
@@ -61,6 +64,9 @@ def update():
 
 @user_page.route("/delete", methods=["GET", "POST"])
 def delete():
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
+
     delete_form = Delete()
     if request.method == "POST" and delete_form.validate_on_submit():
         user_service = UserService()
@@ -77,6 +83,7 @@ def delete():
 
 @user_page.route("/logout", methods=["GET", "POST"])
 def logout():
+
     flash("logout! see you soon!")
     session.pop("user_id")
     session["login"] = False
@@ -90,6 +97,9 @@ def forgot_password():
 
 @user_page.route("/account_page", methods=["GET"])
 def account_page():
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
+
     if request.method == "GET":
         user_service = UserService()
         user = user_service.get_user_info_by_user_id(session["user_id"])
@@ -100,6 +110,9 @@ def account_page():
 
 @user_page.route("/portfolio", methods=["GET"])
 def user_portfolio():
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
+
     if request.method == "GET":
         portfolio_service = PortfolioService()
         data = portfolio_service.get_user_portfolio(session["user_id"])
@@ -118,6 +131,10 @@ def user_portfolio():
 
 @user_page.route("/register_currency", methods=["POST", "GET"])
 def register_currency():
+    print("login" not in session)
+    print(session)
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
 
     if request.method == "POST":
         portfolio_service = PortfolioService()
@@ -132,6 +149,8 @@ def register_currency():
 
 @user_page.route("/update_currency/<currency_name>", methods=["POST", "GET"])
 def update_currency(currency_name):
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
 
     if request.method == "POST":
         portfolio_service = PortfolioService()
@@ -146,6 +165,8 @@ def update_currency(currency_name):
 
 @user_page.route("/delete_currency/<currency_name>", methods=["POST", "GET"])
 def delete_currency(currency_name):
+    if "login" not in session or session["login"] == False:
+        return redirect(url_for("user_page.login"))
 
     if request.method == "POST":
         portfolio_service = PortfolioService()
