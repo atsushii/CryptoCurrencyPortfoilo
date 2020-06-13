@@ -2,14 +2,14 @@ version: "3"
 
 services:
     web:
-        build: .
+        build: ./api/
         ports:
             - "5000:5000"
         tty: true
         environment:
             FLASK_APP: run.py
     mysql:
-        build: ./mysql/
+        build: ./api/mysql/
         volumes:
             - ./mysql/mysql_data:/var/lib/mysql
             - ./mysql/sqls:/docker-entrypoint-initdb.d
@@ -17,3 +17,12 @@ services:
             MYSQL_ROOT_PASSWORD: "root"
         ports:
             - "4306:3306"
+    client:
+        build: ./client/
+        ports:
+            - "3000:3000"
+        volumes:
+            - "./client:/app"
+            - "/app/node_modules"
+        environment:
+            - NODE_ENV=development
