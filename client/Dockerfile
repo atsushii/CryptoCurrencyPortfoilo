@@ -1,8 +1,10 @@
-FROM node:8.11.3
+FROM node:latest
 
-WORKDIR /app/client
+WORKDIR /app
 
-COPY package.json /app/client/package.json
+ENV PATH /app/node_modules/.bin:$PATH
+
+COPY package.json /app/package.json
 
 RUN npm install --silent
 

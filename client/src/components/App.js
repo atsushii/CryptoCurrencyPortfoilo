@@ -1,6 +1,7 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
-import SignUpForm from "./form/SignupForm";
+import RegisterUser from "./form/RegisterUser";
+import LoginForm from "./form/LoginForm";
 import history from "../history";
 
 const App = () => {
@@ -8,7 +9,8 @@ const App = () => {
     <div>
       <Router history={history}>
         <Switch>
-          <Route path="/" exact component={SignUpForm} />
+          <Route path="/form/signup" exact component={RegisterUser} />
+          <Route path="/form/login" exact component={LoginForm} />
         </Switch>
       </Router>
     </div>
