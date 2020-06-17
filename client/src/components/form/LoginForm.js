@@ -39,7 +39,7 @@ class LoginForm extends React.Component {
                 </div>
                 <form className="user">
                   <Field
-                    name="userName"
+                    name="username"
                     component={this.renderInput}
                     label="Enter User Name"
                     type="text"

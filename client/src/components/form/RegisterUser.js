@@ -11,7 +11,6 @@ class RegisterUser extends React.Component {
   render() {
     return (
       <div>
-        <h2>Signup</h2>
         <UserForm onSubmit={this.onSubmit} />
       </div>
     );

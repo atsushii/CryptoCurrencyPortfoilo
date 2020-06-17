@@ -48,7 +48,7 @@ class UserForm extends React.Component {
                   className="user"
                 >
                   <Field
-                    name="userName"
+                    name="username"
                     component={this.renderInput}
                     label="Enter User Name"
                     type="text"
