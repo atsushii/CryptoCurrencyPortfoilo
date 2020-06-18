@@ -6,44 +6,35 @@ from app.forms.delete.forms import Delete
 from app.utils.execute_user_db import UserService
 from app.utils.execute_crypt_db import PortfolioService
 from app.utils.execute_api import API
+import json
 
 user_page = Blueprint("user_page", __name__,
                       template_folder="templates")
 
 
-@user_page.route("/signup", methods=["GET", "POST"])
+@user_page.route("/signup", methods=["POST"])
 def signup():
-    signup_form = SignupForm()
-
-    if request.method == "POST" and signup_form.validate_on_submit():
-        # duplicete check user_name and user_mail
-        user_service = UserService()
-        error = user_service.register(request.form)
-        if error == True:
-            return redirect(url_for("user_page.login"))
-        # alredy exist same user name ot email
-        flash(f"{error} is already existing")
-    return render_template("user/signup.html", title="Sign Up", form=signup_form)
+    # duplicete check user_name and user_mail
+    user_service = UserService()
+    error = user_service.register(json.loads(request.data))
+    if error == True:
+        return request.data
+    # alredy exist same user name or email
+    return ""
 
 
-@user_page.route("/login", methods=["GET", "POST"])
+@user_page.route("/login", methods=["POST"])
 def login():
-    login_form = Login()
-
-    if request.method == "POST" and login_form.validate_on_submit():
-        # check if user already created a account
-        user_service = UserService()
-        error = user_service.login(request.form)
-        if error:
-            session["user_id"] = error
-            session["login"] = True
-            flash("Welcome back")
-            return redirect(url_for("user_page.user_portfolio"))
-
-        # alredy exist same user name ot email
-        flash("User information is not existing Try again or please signup in signup page")
-
-    return render_template("user/login.html", title="Login", form=login_form)
+    # check if user already created a account
+    user_service = UserService()
+    error = user_service.login(json.loads(request.data))
+    if error:
+        session["user_id"] = error
+        session["login"] = True
+        # return user id
+        return error
+    # doesn't match post data with user info in db
+    return ""
 
 
 @user_page.route("/update", methods=["GET", "POST"])
@@ -62,23 +53,29 @@ def update():
     return render_template("user/update.html", title="Update", form=update_form)
 
 
-@user_page.route("/delete", methods=["GET", "POST"])
-def delete():
+@user_page.route("/delete/<id>", methods=["DELETE"])
+def delete(id):
     if "login" not in session or session["login"] == False:
-        return redirect(url_for("user_page.login"))
+        return ""
 
-    delete_form = Delete()
-    if request.method == "POST" and delete_form.validate_on_submit():
-        user_service = UserService()
-        error = user_service.delete(request.form, session["user_id"])
-        if error == True:
-            flash("Thank you see you soon")
+    user_service = UserService()
+    error = user_service.delete(id)
+       if error == True:
             session.pop("user_id")
             session["login"] = False
-            flash("Thank you")
-            return redirect(url_for("user_page.signup"))
-        flash(error)
-    return render_template("user/delete.html", title="Delete", form=delete_form)
+            return ""
+    return False
+
+
+@user_page.route("/fetch/<id>", methods=["GET"])
+def fetch(id):
+    if "login" not in session or session["login"] == False:
+        return ""
+
+    user_service = UserService()
+    res = user_service.get_user_info_by_user_id(id)
+
+    return res
 
 
 @user_page.route("/logout", methods=["GET", "POST"])
