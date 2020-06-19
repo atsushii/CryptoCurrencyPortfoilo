@@ -31,8 +31,8 @@ def login():
     if error:
         session["user_id"] = error
         session["login"] = True
-        # return user id
-        return error
+        # return user data
+        return request.data
     # doesn't match post data with user info in db
     return ""
 
@@ -60,10 +60,10 @@ def delete(id):
 
     user_service = UserService()
     error = user_service.delete(id)
-       if error == True:
-            session.pop("user_id")
-            session["login"] = False
-            return ""
+    if error == True:
+        session.pop("user_id")
+        session["login"] = False
+        return ""
     return False
 
 
