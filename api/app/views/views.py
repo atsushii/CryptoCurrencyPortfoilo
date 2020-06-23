@@ -73,9 +73,6 @@ def fetch(id):
     print("fetch", session)
     if "login" not in session or session["login"] == False:
         return ""
-    print("after", session)
-    if "login" not in session or session["login"] == False:
-        return ""
 
     user_service = UserService()
     user = user_service.get_user_info_by_user_id(id)
