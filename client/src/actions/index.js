@@ -33,8 +33,11 @@ export const fetchUser = (id) => async (dispatch) => {
 };
 
 export const deleteUser = (id) => async (dispatch) => {
-  await crypto.delete(`/delete/${id}`);
+  await crypto.delete(`/delete/${id}`, {
+    withCredentials: true,
+  });
   dispatch({ type: DELETE_USER, payload: id });
+  history.push("/form/signup");
 };
 
 export const reFetchUser = () => async (dispatch) => {
