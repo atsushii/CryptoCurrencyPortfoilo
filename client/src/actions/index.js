@@ -18,7 +18,7 @@ export const signUp = (formValues) => async (dispatch) => {
 
 export const login = (formValues) => async (dispatch) => {
   const response = await crypto.post("/login", formValues, {
-    credentials: "same-origin",
+    withCredentials: true,
   });
 
   dispatch({ type: LOGIN, payload: response.data });
@@ -38,8 +38,8 @@ export const deleteUser = (id) => async (dispatch) => {
 };
 
 export const reFetchUser = () => async (dispatch) => {
-  const response = await crypto.get("/refetch");
-  console.log("refetch");
-  console.log(response.data);
+  const response = await crypto.get("/refetch", {
+    withCredentials: true,
+  });
   dispatch({ type: REFETCH_USER, payload: response.data });
 };
