@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, redirect, flash, url_for, session
+from flask import Flask, Blueprint, render_template, request, redirect, flash, url_for, session, jsonify
 from app.forms.signup.forms import SignupForm
 from app.forms.login.forms import Login
 from app.forms.update.forms import Update
@@ -27,12 +27,13 @@ def signup():
 def login():
     # check if user already created a account
     user_service = UserService()
-    error = user_service.login(json.loads(request.data))
-    if error:
-        session["user_id"] = error
+    user = user_service.login(json.loads(request.data))
+    if user:
+        session["user_id"] = user.user_id
         session["login"] = True
         # return user data
-        return request.data
+        print(session)
+        return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
     # doesn't match post data with user info in db
     return ""
 
@@ -61,21 +62,36 @@ def delete(id):
     user_service = UserService()
     error = user_service.delete(id)
     if error == True:
-        session.pop("user_id")
-        session["login"] = False
+        session.pop("user_id", None)
+        session["login"] = None
         return ""
     return False
 
 
 @user_page.route("/fetch/<id>", methods=["GET"])
 def fetch(id):
+    print("fetch", session)
+    if "login" not in session or session["login"] == False:
+        return ""
+    print("after", session)
     if "login" not in session or session["login"] == False:
         return ""
 
     user_service = UserService()
-    res = user_service.get_user_info_by_user_id(id)
+    user = user_service.get_user_info_by_user_id(id)
 
-    return res
+    return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
+
+
+@user_page.route("/refetch", methods=["GET"])
+def refetch():
+    if "login" not in session or session["login"] == False:
+        return ""
+
+    user_service = UserService()
+    user = user_service.get_user_info_by_user_id(session["user_id"])
+    print("refetch", user)
+    return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
 
 
 @user_page.route("/logout", methods=["GET", "POST"])
@@ -95,6 +111,7 @@ def forgot_password():
 @user_page.route("/account_page", methods=["GET"])
 def account_page():
     if "login" not in session or session["login"] == False:
+
         return redirect(url_for("user_page.login"))
 
     if request.method == "GET":
@@ -108,6 +125,7 @@ def account_page():
 @user_page.route("/portfolio", methods=["GET"])
 def user_portfolio():
     if "login" not in session or session["login"] == False:
+
         return redirect(url_for("user_page.login"))
 
     if request.method == "GET":
@@ -131,6 +149,7 @@ def register_currency():
     print("login" not in session)
     print(session)
     if "login" not in session or session["login"] == False:
+
         return redirect(url_for("user_page.login"))
 
     if request.method == "POST":
@@ -147,6 +166,7 @@ def register_currency():
 @user_page.route("/update_currency/<currency_name>", methods=["POST", "GET"])
 def update_currency(currency_name):
     if "login" not in session or session["login"] == False:
+
         return redirect(url_for("user_page.login"))
 
     if request.method == "POST":
@@ -163,6 +183,7 @@ def update_currency(currency_name):
 @user_page.route("/delete_currency/<currency_name>", methods=["POST", "GET"])
 def delete_currency(currency_name):
     if "login" not in session or session["login"] == False:
+
         return redirect(url_for("user_page.login"))
 
     if request.method == "POST":
