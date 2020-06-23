@@ -5,22 +5,24 @@ import {
   LOGOUT,
   FETCH_USER,
   DELETE_USER,
+  REFETCH_USER,
 } from "../actions/types";
 
-const INITIAL_STATE = {
-  isSignedIn: null,
-  userId: null,
-};
-
-export default (state = INITIAL_STATE, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case SIGN_UP:
-      return { ...state, isSignedIn: null, userId: null };
+      return state;
 
     case LOGIN:
-      return { ...state, isSignedIn: true, userId: action.payload };
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
 
     case FETCH_USER:
+      return { ...state, [action.payload.id]: action.payload };
+
+    case REFETCH_USER:
       return { ...state, [action.payload.id]: action.payload };
 
     case DELETE_USER:
