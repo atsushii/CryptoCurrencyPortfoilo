@@ -32,7 +32,6 @@ def login():
         session["user_id"] = user.user_id
         session["login"] = True
         # return user data
-        print(session)
         return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
     # doesn't match post data with user info in db
     return ""
@@ -56,6 +55,7 @@ def update():
 
 @user_page.route("/delete/<id>", methods=["DELETE"])
 def delete(id):
+
     if "login" not in session or session["login"] == False:
         return ""
 
@@ -64,13 +64,12 @@ def delete(id):
     if error == True:
         session.pop("user_id", None)
         session["login"] = None
-        return ""
+        return True
     return False
 
 
 @user_page.route("/fetch/<id>", methods=["GET"])
 def fetch(id):
-    print("fetch", session)
     if "login" not in session or session["login"] == False:
         return ""
 
