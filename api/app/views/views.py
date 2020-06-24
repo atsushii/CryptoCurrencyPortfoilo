@@ -37,20 +37,16 @@ def login():
     return ""
 
 
-@user_page.route("/update", methods=["GET", "POST"])
-def update():
+@user_page.route("/edit/<id>", methods=["PATCH"])
+def edit(id):
     if "login" not in session or session["login"] == False:
-        return redirect(url_for("user_page.login"))
+        return ""
+    user_service = UserService()
+    response = user_service.update(json.loads(request.data), id)
+    if response:
+        return jsonify(json.loads(request.data))
 
-    update_form = Update()
-    if request.method == "POST" and update_form.validate_on_submit():
-        user_service = UserService()
-        error = user_service.update(request.form, session["user_id"])
-        if error:
-            flash("Update was Success")
-            return redirect(url_for("user_page.account_page"))
-        flash(error)
-    return render_template("user/update.html", title="Update", form=update_form)
+    return ""
 
 
 @user_page.route("/delete/<id>", methods=["DELETE"])
@@ -76,7 +72,7 @@ def fetch(id):
     user_service = UserService()
     user = user_service.get_user_info_by_user_id(id)
 
-    return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
+    return jsonify(id=user.user_id, username=user.user_name, email=user.user_mail, password=user.user_password)
 
 
 @user_page.route("/refetch", methods=["GET"])
@@ -87,7 +83,7 @@ def refetch():
     user_service = UserService()
     user = user_service.get_user_info_by_user_id(session["user_id"])
     print("refetch", user)
-    return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
+    return jsonify(id=user.user_id, username=user.user_name, email=user.user_mail, password=user.user_password)
 
 
 @user_page.route("/logout", methods=["GET", "POST"])
