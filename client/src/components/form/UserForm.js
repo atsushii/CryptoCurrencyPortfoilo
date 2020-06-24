@@ -40,7 +40,7 @@ class UserForm extends React.Component {
             <div className="col-lg-7">
               <div className="p-5">
                 <div className="text-center">
-                  <h1 className="h4 text-gray-900 mb-4">Create an Account</h1>
+                  <h1 className="h4 text-gray-900 mb-4">{this.props.title}</h1>
                 </div>
 
                 <form
@@ -52,6 +52,7 @@ class UserForm extends React.Component {
                     component={this.renderInput}
                     label="Enter User Name"
                     type="text"
+                    placeholder="First Name"
                   ></Field>
                   <Field
                     name="email"
@@ -72,7 +73,7 @@ class UserForm extends React.Component {
                     type="text"
                   ></Field>
                   <button className="btn btn-primary btn-user btn-block">
-                    SignUp
+                    {this.props.submitButton}
                   </button>
                 </form>
                 <div className="text-center">
@@ -92,10 +93,10 @@ class UserForm extends React.Component {
 const validate = (value) => {
   const errors = {};
 
-  if (!value.userName) {
-    errors.userName = "Required";
-  } else if (value.userName.length > 10) {
-    errors.userName = "input must be less than 10 character";
+  if (!value.username) {
+    errors.username = "Required";
+  } else if (value.username.length > 10) {
+    errors.username = "input must be less than 10 character";
   }
 
   if (!value.email) {
