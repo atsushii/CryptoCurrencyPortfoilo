@@ -12,8 +12,8 @@ const Model = (props) => {
                 <h1 className="h4 text-gray-900 mb-4">{props.title}</h1>
                 <div onClick={props.onDismiss}>
                   <div onClick={(e) => e.stopPropagation()}>
-                    <div style={{ "margin-top": 20 }}>{props.content}</div>
-                    <div style={{ "margin-top": 20 }}>{props.actions}</div>
+                    <div style={{ marginTop: "20px" }}>{props.content}</div>
+                    <div style={{ marginTop: "20px" }}>{props.actions}</div>
                   </div>
                 </div>
               </div>
