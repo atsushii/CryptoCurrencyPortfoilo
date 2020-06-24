@@ -23,6 +23,7 @@ class EditUser extends React.Component {
           initialValues={_.pick(this.props.user, "username", "email")}
           onSubmit={this.onSubmit}
           title="Edit a User"
+          submitButton="Update"
         />
       </div>
     );
