@@ -114,26 +114,23 @@ def account_page():
     return redirect(url_for("user_page.signup"))
 
 
-@user_page.route("/portfolio", methods=["GET"])
-def user_portfolio():
+@user_page.route("/fetch_currency/<id>", methods=["GET"])
+def fetch_currency(id):
     if "login" not in session or session["login"] == False:
 
-        return redirect(url_for("user_page.login"))
+        return ""
 
-    if request.method == "GET":
-        portfolio_service = PortfolioService()
-        data = portfolio_service.get_user_portfolio(session["user_id"])
-        user_service = UserService()
-        user = user_service.get_user_info_by_user_id(session["user_id"])
+    portfolio_service = PortfolioService()
+    data = portfolio_service.get_user_portfolio(id)
+    print(data)
+    if data:
+        api = API()
+        "data[0]: currency name, data[1]: number of hold currency"
+        result = api.call_api(data[0])
+        currency_list, total_value = api.data_process(result, data[1])
+        return jsonify(id=id, currency_list=currency_list, total_value=total_value)
 
-        if data and user:
-            api = API()
-            "data[0]: currency name, data[1]: number of hold currency"
-            result = api.call_api(data[0])
-            result, total_value = api.data_process(result, data[1])
-            return render_template("portfolio/user_portfolio.html", title="Portfolio", result=result, num_of_holds=data[1], total_value=total_value, user=user)
-
-    return render_template("portfolio/user_portfolio.html", title="Portfolio", result="", num_of_holds="", total_value=0, user=user)
+    return jsonify(id=id, currency_list="", total_value=0)
 
 
 @user_page.route("/register_currency", methods=["POST", "GET"])
