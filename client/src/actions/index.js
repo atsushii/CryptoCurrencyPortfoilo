@@ -5,8 +5,10 @@ import {
   LOGIN,
   LOGOUT,
   FETCH_USER,
+  EDIT_USER,
   DELETE_USER,
   REFETCH_USER,
+  FETCH_CURRENCY,
 } from "./types";
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -22,7 +24,7 @@ export const login = (formValues) => async (dispatch) => {
   });
 
   dispatch({ type: LOGIN, payload: response.data });
-  history.push(`/form/delete/${response.data.id}`);
+  history.push(`/portfolio/${response.data.id}`);
 };
 
 export const fetchUser = (id) => async (dispatch) => {
@@ -30,6 +32,15 @@ export const fetchUser = (id) => async (dispatch) => {
     withCredentials: true,
   });
   dispatch({ type: FETCH_USER, payload: response.data });
+};
+
+export const editUser = (id, formValue) => async (dispatch) => {
+  const response = await crypto.patch(`/edit/${id}`, formValue, {
+    withCredentials: true,
+  });
+
+  dispatch({ type: EDIT_USER, payload: response.data });
+  history.push(`/form/delete/${id}`);
 };
 
 export const deleteUser = (id) => async (dispatch) => {
@@ -45,4 +56,12 @@ export const reFetchUser = () => async (dispatch) => {
     withCredentials: true,
   });
   dispatch({ type: REFETCH_USER, payload: response.data });
+};
+
+export const fetch_currency = (id) => async (dispatch) => {
+  const response = await crypto.get(`/fetch_currency/${id}`, {
+    withCredentials: true,
+  });
+
+  dispatch({ type: FETCH_CURRENCY, payload: response.data });
 };
