@@ -13,6 +13,10 @@ class EditCurrencyForm extends React.Component {
     );
   };
 
+  onSubmit = (formValues) => {
+    this.props.onSubmit(formValues);
+  };
+
   render() {
     console.log(this.props.initialValues);
     return (
