@@ -9,6 +9,8 @@ import {
   DELETE_USER,
   REFETCH_USER,
   FETCH_CURRENCY,
+  EDIT_CURRENCY,
+  DELETE_CURRENCY,
 } from "./types";
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -58,10 +60,26 @@ export const reFetchUser = () => async (dispatch) => {
   dispatch({ type: REFETCH_USER, payload: response.data });
 };
 
-export const fetch_currency = (id) => async (dispatch) => {
-  const response = await crypto.get(`/fetch_currency/${id}`, {
+export const fetchCurrency = () => async (dispatch) => {
+  const response = await crypto.get("/fetch_currency", {
     withCredentials: true,
   });
 
   dispatch({ type: FETCH_CURRENCY, payload: response.data });
+};
+
+export const editCurrency = (id, formValue) => async (dispatch) => {
+  const response = await crypto.patch(`/edit_currency/${id}`, formValue, {
+    withCredentials: true,
+  });
+  dispatch({ type: EDIT_CURRENCY, payload: response.data });
+  history.push(`/portfolio/${id}`);
+};
+
+export const deleteCurrency = (id, currency) => async (dispatch) => {
+  await crypto.delete(`/delete_currency/${id}/${currency}`, {
+    withCredentials: true,
+  });
+  dispatch({ type: DELETE_CURRENCY, payload: id });
+  history.push(`/portfolio/${id}`);
 };
