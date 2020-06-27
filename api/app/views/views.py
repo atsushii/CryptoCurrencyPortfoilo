@@ -166,18 +166,14 @@ def edit_currency(id):
     return ""
 
 
-@user_page.route("/delete_currency/<currency_name>", methods=["POST", "GET"])
-def delete_currency(currency_name):
+@user_page.route("/delete_currency/<id>/<currency>", methods=["DELETE"])
+def delete_currency(id, currency):
     if "login" not in session or session["login"] == False:
+        return ""
 
-        return redirect(url_for("user_page.login"))
+    portfolio_service = PortfolioService()
+    result = portfolio_service.delete_currency_data(id, currency.upper())
+    if result:
+        return ""
 
-    if request.method == "POST":
-        portfolio_service = PortfolioService()
-        result = portfolio_service.delete_currency_data(
-            session["user_id"], request.form["coin_name"].upper())
-        if result:
-            flash("Deleted!")
-            return redirect(url_for("user_page.user_portfolio"))
-        flash("Failer Try Again!")
-    return render_template("portfolio/delete_currency.html", title="Delete", currency_name=currency_name)
+    return ""
