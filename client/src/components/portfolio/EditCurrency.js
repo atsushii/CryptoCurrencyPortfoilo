@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { fetchCurrency } from "../../actions";
 import EditCurrencyForm from "./EditCurrencyForm";
 import { editCurrency } from "../../actions";
-import _ from "lodash";
-import { compose } from "redux";
 
 class EditCurrency extends React.Component {
   componentDidMount() {
@@ -15,30 +13,29 @@ class EditCurrency extends React.Component {
     this.props.editCurrency(this.props.match.params.id, formValues);
   };
 
-  renderCurrency() {
+  renderInitialValue() {
     const { currency_list } = this.props.portfolio;
-    const { symble } = this.props.match.params;
+    const { symbol } = this.props.match.params;
 
-    return currency_list.filter((currency) => currency.symbol === symble);
+    const { num_hold } = currency_list.filter(
+      (currency) => currency.symbol === symbol
+    )[0];
+    return { symbol: symbol, num_hold: num_hold };
   }
 
   render() {
     if (!this.props.portfolio) {
       return <div>Loading Currency Data</div>;
     }
-
-    const { symble } = this.props.match.params;
-    const { symbol, num_hold } = this.renderCurrency()[0];
-
-    const initialValues = { symbol: symbol, num_hold: num_hold };
+    const { symbol } = this.props.match.params;
 
     return (
       <div>
         <EditCurrencyForm
           onSubmit={this.onSubmit}
-          title={symble}
+          title={symbol}
           submitButton="Update"
-          initialValues={initialValues}
+          initialValues={this.renderInitialValue()}
         />
       </div>
     );
