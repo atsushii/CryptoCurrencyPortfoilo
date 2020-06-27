@@ -82,7 +82,7 @@ def refetch():
 
     user_service = UserService()
     user = user_service.get_user_info_by_user_id(session["user_id"])
-    print("refetch", user)
+
     return jsonify(id=user.user_id, username=user.user_name, email=user.user_mail, password=user.user_password)
 
 
@@ -114,29 +114,27 @@ def account_page():
     return redirect(url_for("user_page.signup"))
 
 
-@user_page.route("/fetch_currency/<id>", methods=["GET"])
-def fetch_currency(id):
+@user_page.route("/fetch_currency", methods=["GET"])
+def fetch_currency():
     if "login" not in session or session["login"] == False:
 
         return ""
 
     portfolio_service = PortfolioService()
-    data = portfolio_service.get_user_portfolio(id)
-    print(data)
+    data = portfolio_service.get_user_portfolio(session["user_id"])
     if data:
         api = API()
         "data[0]: currency name, data[1]: number of hold currency"
         result = api.call_api(data[0])
         currency_list, total_value = api.data_process(result, data[1])
-        return jsonify(id=id, currency_list=currency_list, total_value=total_value)
+        return jsonify(id=session["user_id"], currency_list=currency_list, total_value=total_value)
 
-    return jsonify(id=id, currency_list="", total_value=0)
+    return jsonify(id=session["user_id"], currency_list="", total_value=0)
 
 
 @user_page.route("/register_currency", methods=["POST", "GET"])
 def register_currency():
-    print("login" not in session)
-    print(session)
+
     if "login" not in session or session["login"] == False:
 
         return redirect(url_for("user_page.login"))
@@ -152,21 +150,20 @@ def register_currency():
     return render_template("portfolio/register_currency.html", title="Register")
 
 
-@user_page.route("/update_currency/<currency_name>", methods=["POST", "GET"])
-def update_currency(currency_name):
+@user_page.route("/edit_currency/<id>", methods=["PATCH"])
+def edit_currency(id):
     if "login" not in session or session["login"] == False:
 
-        return redirect(url_for("user_page.login"))
+        return ""
+    edit_data = json.loads(request.data)
+    portfolio_service = PortfolioService()
+    result = portfolio_service.update_currency_data(
+        id, edit_data["symbol"].upper(), edit_data["num_hold"])
+    if result:
 
-    if request.method == "POST":
-        portfolio_service = PortfolioService()
-        result = portfolio_service.update_currency_data(
-            session["user_id"], request.form["coin_name"].upper(), request.form["num_of_currency"])
-        if result:
-            flash("Updated!")
-            return redirect(url_for("user_page.user_portfolio"))
-        flash("Failer Try Again!")
-    return render_template("portfolio/update_currency.html", title="Update", currency_name=currency_name)
+        return jsonify(json.loads(request.data))
+
+    return ""
 
 
 @user_page.route("/delete_currency/<currency_name>", methods=["POST", "GET"])
