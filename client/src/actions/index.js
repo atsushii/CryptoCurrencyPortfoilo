@@ -11,6 +11,7 @@ import {
   FETCH_CURRENCY,
   EDIT_CURRENCY,
   DELETE_CURRENCY,
+  REGISTER_CURRENCY,
 } from "./types";
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -81,5 +82,14 @@ export const deleteCurrency = (id, currency) => async (dispatch) => {
     withCredentials: true,
   });
   dispatch({ type: DELETE_CURRENCY, payload: id });
+  history.push(`/portfolio/${id}`);
+};
+
+export const registerCurrency = (id, formValues) => async (dispatch) => {
+  const response = await crypto.post(`/register_currency/${id}`, formValues, {
+    withCredentials: true,
+  });
+
+  dispatch({ type: REGISTER_CURRENCY, payload: response.data });
   history.push(`/portfolio/${id}`);
 };
