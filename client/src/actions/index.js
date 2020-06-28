@@ -30,8 +30,8 @@ export const login = (formValues) => async (dispatch) => {
   history.push(`/portfolio/${response.data.id}`);
 };
 
-export const fetchUser = (id) => async (dispatch) => {
-  const response = await crypto.get(`/fetch/${id}`, {
+export const fetchUser = () => async (dispatch) => {
+  const response = await crypto.get("/fetch", {
     withCredentials: true,
   });
   dispatch({ type: FETCH_USER, payload: response.data });
@@ -43,7 +43,7 @@ export const editUser = (id, formValue) => async (dispatch) => {
   });
 
   dispatch({ type: EDIT_USER, payload: response.data });
-  history.push(`/form/delete/${id}`);
+  history.push(`/portfolio/userAccount/${id}`);
 };
 
 export const deleteUser = (id) => async (dispatch) => {
