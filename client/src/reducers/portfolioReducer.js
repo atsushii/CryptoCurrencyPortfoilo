@@ -2,6 +2,7 @@ import {
   FETCH_CURRENCY,
   EDIT_CURRENCY,
   DELETE_CURRENCY,
+  REGISTER_CURRENCY,
 } from "../actions/types";
 
 export default (state = {}, action) => {
@@ -10,6 +11,9 @@ export default (state = {}, action) => {
       return { ...state, [action.payload.id]: action.payload };
 
     case EDIT_CURRENCY:
+      return { ...state, [action.payload.id]: action.payload };
+
+    case REGISTER_CURRENCY:
       return { ...state, [action.payload.id]: action.payload };
 
     case DELETE_CURRENCY:
