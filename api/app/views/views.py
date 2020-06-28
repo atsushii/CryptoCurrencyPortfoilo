@@ -60,17 +60,17 @@ def delete(id):
     if error == True:
         session.pop("user_id", None)
         session["login"] = None
-        return True
-    return False
+        return ""
+    return ""
 
 
-@user_page.route("/fetch/<id>", methods=["GET"])
-def fetch(id):
+@user_page.route("/fetch", methods=["GET"])
+def fetch():
     if "login" not in session or session["login"] == False:
         return ""
 
     user_service = UserService()
-    user = user_service.get_user_info_by_user_id(id)
+    user = user_service.get_user_info_by_user_id(session["user_id"])
 
     return jsonify(id=user.user_id, username=user.user_name, email=user.user_mail, password=user.user_password)
 
@@ -132,22 +132,21 @@ def fetch_currency():
     return jsonify(id=session["user_id"], currency_list="", total_value=0)
 
 
-@user_page.route("/register_currency", methods=["POST", "GET"])
-def register_currency():
+@user_page.route("/register_currency/<id>", methods=["POST"])
+def register_currency(id):
 
     if "login" not in session or session["login"] == False:
 
-        return redirect(url_for("user_page.login"))
+        return ""
+    print(json.loads(request.data))
+    request_data = json.loads(request.data)
 
-    if request.method == "POST":
-        portfolio_service = PortfolioService()
-        error = portfolio_service.register(
-            session["user_id"], request.form["coin_name"].upper(), request.form["num_of_currency"])
-        if error == True:
-            flash("complete")
-            return redirect(url_for("user_page.user_portfolio"))
-        flash(error)
-    return render_template("portfolio/register_currency.html", title="Register")
+    portfolio_service = PortfolioService()
+    error = portfolio_service.register(
+        id, request_data["symbol"].upper(), request_data["num_hold"])
+    if error == True:
+        return ""
+    return ""
 
 
 @user_page.route("/edit_currency/<id>", methods=["PATCH"])
