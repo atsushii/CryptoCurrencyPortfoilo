@@ -41,9 +41,6 @@ def login():
 @user_page.route("/edit/<id>", methods=["PATCH"])
 def edit(id):
 
-    if not is_login():
-        return ""
-
     user_service = UserService()
     response = user_service.update(json.loads(request.data), id)
     if response:
@@ -55,14 +52,14 @@ def edit(id):
 @user_page.route("/delete/<id>", methods=["DELETE"])
 def delete(id):
 
-    if not is_login():
+    if session.get("user_id") != id:
         return ""
 
     user_service = UserService()
     error = user_service.delete(id)
     if error == True:
         session.pop("user_id", None)
-        session["login"] = None
+        session.pop("login", None)
         return ""
     return ""
 
@@ -91,12 +88,16 @@ def refetch():
     return jsonify(id=user.user_id, username=user.user_name, email=user.user_mail, password=user.user_password)
 
 
-@user_page.route("/logout", methods=["GET", "POST"])
-def logout():
+@user_page.route("/logout/<id>", methods=["POST"])
+def logout(id):
+
+    print(session)
+    if session.get("user_id") != id:
+        return ""
 
     session.pop("user_id")
     session["login"] = False
-    return redirect(url_for("user_page.login"))
+    return ""
 
 
 @user_page.route("/forgot_password", methods=["GET", "POST"])
@@ -106,8 +107,6 @@ def forgot_password():
 
 @user_page.route("/account_page", methods=["GET"])
 def account_page():
-    if not is_login():
-        return ""
 
     if request.method == "GET":
         user_service = UserService()
@@ -139,9 +138,6 @@ def fetch_currency():
 @user_page.route("/register_currency/<id>", methods=["POST"])
 def register_currency(id):
 
-    if not is_login():
-        return ""
-    print(json.loads(request.data))
     request_data = json.loads(request.data)
 
     portfolio_service = PortfolioService()
@@ -154,8 +150,7 @@ def register_currency(id):
 
 @user_page.route("/edit_currency/<id>", methods=["PATCH"])
 def edit_currency(id):
-    if not is_login():
-        return ""
+
     edit_data = json.loads(request.data)
     portfolio_service = PortfolioService()
     result = portfolio_service.update_currency_data(
@@ -170,8 +165,6 @@ def edit_currency(id):
 @user_page.route("/delete_currency/<id>/<currency>", methods=["DELETE"])
 def delete_currency(id, currency):
 
-    if not is_login():
-        return ""
     portfolio_service = PortfolioService()
     result = portfolio_service.delete_currency_data(id, currency.upper())
     if result:
@@ -182,4 +175,4 @@ def delete_currency(id, currency):
 
 # Check login status
 def is_login():
-    return "login" in session or session["login"]
+    return session.get("login")
