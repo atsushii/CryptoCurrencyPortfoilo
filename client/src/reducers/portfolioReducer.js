@@ -3,6 +3,7 @@ import {
   EDIT_CURRENCY,
   DELETE_CURRENCY,
   REGISTER_CURRENCY,
+  LOGOUT,
 } from "../actions/types";
 
 export default (state = {}, action) => {
@@ -17,6 +18,9 @@ export default (state = {}, action) => {
       return { ...state, [action.payload.id]: action.payload };
 
     case DELETE_CURRENCY:
+      return "";
+
+    case LOGOUT:
       return "";
 
     default:
