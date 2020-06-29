@@ -11,7 +11,13 @@ class RegisterUser extends React.Component {
   render() {
     return (
       <div>
-        <UserForm onSubmit={this.onSubmit} title="Create Account" />
+        <UserForm
+          onSubmit={this.onSubmit}
+          title="Create Account"
+          submitButton="SignUp"
+          link="/form/login"
+          link_description="Already have an account? Login!"
+        />
       </div>
     );
   }
