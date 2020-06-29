@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class Header extends React.Component {
   render() {
@@ -87,23 +88,24 @@ class Header extends React.Component {
               className="dropdown-menu dropdown-menu-right shadow animated--grow-in"
               aria-labelledby="userDropdown"
             >
-              <a
+              <Link
+                to={`userAccount/${this.props.userId}`}
                 className="dropdown-item"
-                href="{{ url_for('user_page.account_page') }}"
               >
-                <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                Account
-              </a>
+                <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400">
+                  Account Page
+                </i>
+              </Link>
+
               <div className="dropdown-divider"></div>
-              <a
+              <Link
+                to={`logputView/${this.props.userId}`}
                 className="dropdown-item"
-                href="#"
-                data-toggle="modal"
-                data-target="#logoutModal"
               >
-                <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                Logout
-              </a>
+                <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400">
+                  Logout
+                </i>
+              </Link>
             </div>
           </li>
         </ul>
