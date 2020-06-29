@@ -28,6 +28,7 @@ def login():
     # check if user already created a account
     user_service = UserService()
     user = user_service.login(json.loads(request.data))
+
     if user:
         session["user_id"] = user.user_id
         session["login"] = True
@@ -39,8 +40,10 @@ def login():
 
 @user_page.route("/edit/<id>", methods=["PATCH"])
 def edit(id):
-    if "login" not in session or session["login"] == False:
+
+    if not is_login():
         return ""
+
     user_service = UserService()
     response = user_service.update(json.loads(request.data), id)
     if response:
@@ -52,7 +55,7 @@ def edit(id):
 @user_page.route("/delete/<id>", methods=["DELETE"])
 def delete(id):
 
-    if "login" not in session or session["login"] == False:
+    if not is_login():
         return ""
 
     user_service = UserService()
@@ -66,7 +69,8 @@ def delete(id):
 
 @user_page.route("/fetch", methods=["GET"])
 def fetch():
-    if "login" not in session or session["login"] == False:
+
+    if not is_login():
         return ""
 
     user_service = UserService()
@@ -77,7 +81,8 @@ def fetch():
 
 @user_page.route("/refetch", methods=["GET"])
 def refetch():
-    if "login" not in session or session["login"] == False:
+
+    if not is_login():
         return ""
 
     user_service = UserService()
@@ -89,7 +94,6 @@ def refetch():
 @user_page.route("/logout", methods=["GET", "POST"])
 def logout():
 
-    flash("logout! see you soon!")
     session.pop("user_id")
     session["login"] = False
     return redirect(url_for("user_page.login"))
@@ -102,9 +106,8 @@ def forgot_password():
 
 @user_page.route("/account_page", methods=["GET"])
 def account_page():
-    if "login" not in session or session["login"] == False:
-
-        return redirect(url_for("user_page.login"))
+    if not is_login():
+        return ""
 
     if request.method == "GET":
         user_service = UserService()
@@ -116,7 +119,8 @@ def account_page():
 
 @user_page.route("/fetch_currency", methods=["GET"])
 def fetch_currency():
-    if "login" not in session or session["login"] == False:
+
+    if not is_login():
 
         return ""
 
@@ -135,8 +139,7 @@ def fetch_currency():
 @user_page.route("/register_currency/<id>", methods=["POST"])
 def register_currency(id):
 
-    if "login" not in session or session["login"] == False:
-
+    if not is_login():
         return ""
     print(json.loads(request.data))
     request_data = json.loads(request.data)
@@ -151,8 +154,7 @@ def register_currency(id):
 
 @user_page.route("/edit_currency/<id>", methods=["PATCH"])
 def edit_currency(id):
-    if "login" not in session or session["login"] == False:
-
+    if not is_login():
         return ""
     edit_data = json.loads(request.data)
     portfolio_service = PortfolioService()
@@ -167,12 +169,17 @@ def edit_currency(id):
 
 @user_page.route("/delete_currency/<id>/<currency>", methods=["DELETE"])
 def delete_currency(id, currency):
-    if "login" not in session or session["login"] == False:
-        return ""
 
+    if not is_login():
+        return ""
     portfolio_service = PortfolioService()
     result = portfolio_service.delete_currency_data(id, currency.upper())
     if result:
         return ""
 
     return ""
+
+
+# Check login status
+def is_login():
+    return "login" in session or session["login"]
