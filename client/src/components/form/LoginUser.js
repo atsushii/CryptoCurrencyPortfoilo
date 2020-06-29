@@ -11,7 +11,13 @@ class LoginUser extends React.Component {
   render() {
     return (
       <div>
-        <UserForm onSubmit={this.onSubmit} title="Login" />
+        <UserForm
+          onSubmit={this.onSubmit}
+          title="Login"
+          submitButton="Login"
+          link="/form/signup"
+          link_description="Don't you have an account? Signup!"
+        />
       </div>
     );
   }
