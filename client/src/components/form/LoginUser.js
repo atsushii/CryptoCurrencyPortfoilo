@@ -15,8 +15,10 @@ class LoginUser extends React.Component {
           onSubmit={this.onSubmit}
           title="Login"
           submitButton="Login"
-          link="/form/signup"
-          link_description="Don't you have an account? Signup!"
+          linkToSignupOrLogin="/form/signup"
+          linkDescriptionForSignupOrLogin="Don't you have an account? Signup!"
+          linkToForgetPassword="/form/forgetPassword"
+          linkDescriptionForForgetPassword="Forget password?"
         />
       </div>
     );
