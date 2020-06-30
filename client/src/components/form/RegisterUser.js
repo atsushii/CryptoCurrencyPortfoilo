@@ -15,8 +15,10 @@ class RegisterUser extends React.Component {
           onSubmit={this.onSubmit}
           title="Create Account"
           submitButton="SignUp"
-          link="/form/login"
-          link_description="Already have an account? Login!"
+          linkToSignupOrLogin="/form/login"
+          linkDescriptionForSignupOrLogin="Already have an account? Login!"
+          linkToForgetPassword=""
+          linkDescriptionForForgetPassword=""
         />
       </div>
     );
