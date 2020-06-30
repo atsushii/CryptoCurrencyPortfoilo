@@ -91,7 +91,6 @@ def refetch():
 @user_page.route("/logout/<id>", methods=["POST"])
 def logout(id):
 
-    print(session)
     if session.get("user_id") != id:
         return ""
 
@@ -100,9 +99,28 @@ def logout(id):
     return ""
 
 
-@user_page.route("/forgot_password", methods=["GET", "POST"])
+@user_page.route("/forgot_password", methods=["POST"])
 def forgot_password():
-    return render_template("user/forgot_password.html")
+    response = json.loads(request.data)
+    user_service = UserService()
+
+    user = user_service.get_user_info_by_email(response["email"])
+
+    if user:
+    return jsonify(json.loads(request.data))
+
+
+@user_page.route("/reset_password", methods=["POST"])
+def reset_password(token):
+    response = json.loads(request.data)
+    token = response["tempPassword"]
+    user_service = UserService()
+
+    user = user_service.reset_password_by_token(token)
+
+    if user is None:
+        return ""
+    return jsonify(json.loads(request.data))
 
 
 @user_page.route("/account_page", methods=["GET"])
