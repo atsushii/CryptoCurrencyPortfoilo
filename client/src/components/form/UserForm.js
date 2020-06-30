@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { Link } from "react-router-dom";
 
 class UserForm extends React.Component {
   renderError({ error, touched }) {
@@ -36,8 +37,7 @@ class UserForm extends React.Component {
       <div className="card o-hidden border-0 shadow-lg my-5">
         <div className="card-body p-0">
           <div className="row">
-            <div className="col-lg-5 d-none d-lg-block bg-register-image"></div>
-            <div className="col-lg-7">
+            <div className="col">
               <div className="p-5">
                 <div className="text-center">
                   <h1 className="h4 text-gray-900 mb-4">{this.props.title}</h1>
@@ -52,7 +52,6 @@ class UserForm extends React.Component {
                     component={this.renderInput}
                     label="Enter User Name"
                     type="text"
-                    placeholder="First Name"
                   ></Field>
                   <Field
                     name="email"
@@ -77,9 +76,14 @@ class UserForm extends React.Component {
                   </button>
                 </form>
                 <div className="text-center">
-                  <a className="small" href="{{ url_for('user_page.login') }}">
-                    Already have an account? Login!
-                  </a>
+                  <Link className="small" to={this.props.linkToSignupOrLogin}>
+                    {this.props.linkDescriptionForSignupOrLogin}
+                  </Link>
+                </div>
+                <div className="text-center">
+                  <Link className="small" to={this.props.linkToForgetPassword}>
+                    {this.props.linkDescriptionForForgetPassword}
+                  </Link>
                 </div>
               </div>
             </div>
