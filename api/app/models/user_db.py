@@ -1,5 +1,7 @@
 from app import db
 from app.models.user_crypt_db import UserCrypt
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+import app
 
 
 class User(db.Model):
@@ -39,21 +41,40 @@ class User(db.Model):
     def find_user_info(cls, name, mail, password):
         user = User.query.filter_by(user_name=name).first()
         if user is not None and user.user_name == name and user.user_mail == mail and user.user_password == password:
-            return user.user_id
+            return user
 
         return False
 
     @classmethod
     def update_user_info(cls, user_id):
         user = User.query.filter_by(user_id=user_id).first()
-        if user is not None:
-            return user
-        return False
+        return user
 
     @classmethod
-    def delete_user_info(cls, user_id, name, mail, password):
+    def delete_user_info(cls, user_id):
         user = User.query.filter_by(user_id=user_id).first()
-        if user is not None and user.user_name == name and user.user_mail == mail and user.user_password == password:
-            return user
+        return user
 
-        return False
+    @classmethod
+    def get_useid_by_email(cls, email):
+        user = User.query.filter_by(user_mail=email).first()
+
+        if user is None:
+            return False
+        return user
+
+    @classmethod
+    def get_reset_token(cls, user_id, expires_sec=300):
+        s = Serializer(app.Config.SECRET_KEY, expires_sec)
+        return s.dumps({"user_id": user_id}).decode("utf-8")
+
+    @staticmethod
+    def vertify_reset_token(token):
+        s = Serializer(app.Config.SECRET_KEY)
+
+        try:
+            user_id = s.loads(token)["user_id"]
+        except:
+            return None
+
+        return User.query.get(user_id)
