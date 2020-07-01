@@ -106,21 +106,37 @@ def forgot_password():
 
     user = user_service.get_user_info_by_email(response["email"])
 
-    if user:
-    return jsonify(json.loads(request.data))
+    if not user:
+        return ""
+    user_service.send_reset_mail(user)
+
+    return ""
 
 
-@user_page.route("/reset_password", methods=["POST"])
-def reset_password(token):
-    response = json.loads(request.data)
-    token = response["tempPassword"]
+@user_page.route("/is_valid_token/<token>", methods=["POST"])
+def is_valid_token(token):
     user_service = UserService()
 
     user = user_service.reset_password_by_token(token)
-
     if user is None:
         return ""
-    return jsonify(json.loads(request.data))
+
+    return jsonify(ok=True)
+
+
+@user_page.route("/reset_password/<token>", methods=["POST"])
+def reset_password(token):
+    form_data = json.loads(request.data)
+    user_service = UserService()
+
+    user = user_service.reset_password_by_token(token)
+    if user is None:
+        return ""
+
+    result = user_service.register_new_password(user, form_data)
+    if result:
+        return ""
+    return ""
 
 
 @user_page.route("/account_page", methods=["GET"])
