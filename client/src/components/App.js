@@ -8,6 +8,10 @@ import Portfolio from "./portfolio/Portfolio";
 import EditCurrency from "./portfolio/EditCurrency";
 import RegisterCurrency from "./portfolio/RegisterCurrency";
 import DeleteCurrency from "./portfolio/DeleteCurrency";
+import UserAccount from "./portfolio/UserAccount";
+import LogoutView from "./portfolio/LogoutView";
+import ForgetPassword from "./form/ForgetPassword";
+import ResetPassword from "./form/ResetPassword";
 import history from "../history";
 
 const App = () => {
@@ -19,6 +23,12 @@ const App = () => {
           <Route path="/form/login" exact component={LoginUser} />
           <Route path="/form/edit/:id" exact component={EditUser} />
           <Route path="/form/delete/:id" exact component={DeleteUser} />
+          <Route path="/form/forgetPassword" exact component={ForgetPassword} />
+          <Route
+            path="/form/resetPassword/:token"
+            exact
+            component={ResetPassword}
+          />
           <Route path="/portfolio/:id" exact component={Portfolio} />
           <Route
             path="/portfolio/registerCurrency/:id"
@@ -34,6 +44,16 @@ const App = () => {
             path="/portfolio/deleteCurrency/:id/:symbol"
             exact
             component={DeleteCurrency}
+          />
+          <Route
+            path="/portfolio/userAccount/:id"
+            exact
+            component={UserAccount}
+          />
+          <Route
+            path="/portfolio/logputView/:id"
+            exact
+            component={LogoutView}
           />
         </Switch>
       </Router>
