@@ -12,6 +12,9 @@ import {
   EDIT_CURRENCY,
   DELETE_CURRENCY,
   REGISTER_CURRENCY,
+  FORGET_PASSWORD,
+  RESET_PASSWORD,
+  IS_VALID_TOKEN,
 } from "./types";
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -47,7 +50,6 @@ export const fetchUser = () => async (dispatch) => {
   const response = await crypto.get("/fetch", {
     withCredentials: true,
   });
-  console.log(response);
   if (!response.data) {
     history.push("/form/signup");
   }
@@ -126,4 +128,37 @@ export const registerCurrency = (id, formValues) => async (dispatch) => {
 
   dispatch({ type: REGISTER_CURRENCY, payload: response.data });
   history.push(`/portfolio/${id}`);
+};
+
+export const forgetPassword = (formValue) => async (dispatch) => {
+  const response = await crypto.post("/forgot_password", formValue, {
+    withCredentials: true,
+  });
+  dispatch({ type: FORGET_PASSWORD, payload: response.data });
+
+  history.push("/form/login");
+};
+
+export const resetPassword = (formValues, token) => async (dispatch) => {
+  const response = await crypto.post(`/reset_password/${token}`, formValues, {
+    withCredentials: true,
+  });
+
+  if (!response.data) {
+    history.push("/form/forgetPassword");
+  }
+
+  dispatch({ type: RESET_PASSWORD, payload: response.data });
+
+  history.push("/form/login");
+};
+
+export const isValidToken = (token) => async () => {
+  const response = await crypto.post(`/is_valid_token/${token}`, {
+    withCredentials: true,
+  });
+  console.log(response);
+  if (!response.data.ok) {
+    history.push("/form/forgetPassword");
+  }
 };
