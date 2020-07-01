@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { fetchCurrency } from "../../actions";
-import EditCurrencyForm from "./EditCurrencyForm";
+import CurrencyForm from "./CurrencyForm";
 import { editCurrency } from "../../actions";
 
 class EditCurrency extends React.Component {
@@ -31,10 +31,11 @@ class EditCurrency extends React.Component {
 
     return (
       <div>
-        <EditCurrencyForm
+        <CurrencyForm
           onSubmit={this.onSubmit}
-          title={symbol}
+          title={`Edit: ${symbol}`}
           submitButton="Update"
+          userId={this.props.match.params.id}
           initialValues={this.renderInitialValue()}
         />
       </div>

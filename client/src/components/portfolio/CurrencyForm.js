@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { Link } from "react-router-dom";
 
 class CurrencyForm extends React.Component {
   renderInput = ({ input, label }) => {
@@ -51,9 +52,12 @@ class CurrencyForm extends React.Component {
                   </button>
                 </form>
                 <div className="text-center">
-                  <a className="small" href="{{ url_for('user_page.login') }}">
-                    Already have an account? Login!
-                  </a>
+                  <Link
+                    className="small"
+                    to={`/portfolio/${this.props.userId}`}
+                  >
+                    Back to Portfolio
+                  </Link>
                 </div>
               </div>
             </div>
