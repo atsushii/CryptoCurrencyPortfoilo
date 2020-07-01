@@ -14,7 +14,6 @@ import {
   REGISTER_CURRENCY,
   FORGET_PASSWORD,
   RESET_PASSWORD,
-  IS_VALID_TOKEN,
 } from "./types";
 
 export const signUp = (formValues) => async (dispatch) => {
@@ -29,6 +28,10 @@ export const login = (formValues) => async (dispatch) => {
     withCredentials: true,
   });
 
+  if (!response.data.ok) {
+    history.push("/form/login");
+  }
+
   dispatch({ type: LOGIN, payload: response.data });
   history.push(`/portfolio/${response.data.id}`);
 };
@@ -38,8 +41,8 @@ export const logoutUser = (id) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data) {
-    history.push("/form/signup");
+  if (!response.data.ok) {
+    history.push(`/portfolio/${id}`);
   }
 
   dispatch({ type: LOGOUT, payload: id });
@@ -50,6 +53,7 @@ export const fetchUser = () => async (dispatch) => {
   const response = await crypto.get("/fetch", {
     withCredentials: true,
   });
+
   if (!response.data) {
     history.push("/form/signup");
   }
@@ -62,6 +66,10 @@ export const editUser = (id, formValue) => async (dispatch) => {
     withCredentials: true,
   });
 
+  if (!response.data) {
+    history.push(`/form/edit/${id}`);
+  }
+
   dispatch({ type: EDIT_USER, payload: response.data });
   history.push(`/portfolio/userAccount/${id}`);
 };
@@ -71,8 +79,8 @@ export const deleteUser = (id) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data) {
-    history.push("/form/signup");
+  if (!response.data.ok) {
+    history.push(`/form/delete/${id}`);
   }
 
   dispatch({ type: DELETE_USER, payload: id });
@@ -134,6 +142,11 @@ export const forgetPassword = (formValue) => async (dispatch) => {
   const response = await crypto.post("/forgot_password", formValue, {
     withCredentials: true,
   });
+
+  if (!response.data.ok) {
+    history.push("/form/forgetPassword");
+  }
+
   dispatch({ type: FORGET_PASSWORD, payload: response.data });
 
   history.push("/form/login");
@@ -144,7 +157,7 @@ export const resetPassword = (formValues, token) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data) {
+  if (!response.data.ok) {
     history.push("/form/forgetPassword");
   }
 
@@ -157,7 +170,7 @@ export const isValidToken = (token) => async () => {
   const response = await crypto.post(`/is_valid_token/${token}`, {
     withCredentials: true,
   });
-  console.log(response);
+
   if (!response.data.ok) {
     history.push("/form/forgetPassword");
   }
