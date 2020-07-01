@@ -17,10 +17,10 @@ def signup():
     # duplicete check user_name and user_mail
     user_service = UserService()
     error = user_service.register(json.loads(request.data))
-    if error == True:
-        return request.data
+    if error:
+        return jsonify(ok=True)
     # alredy exist same user name or email
-    return ""
+    return jsonify(ok=False)
 
 
 @user_page.route("/login", methods=["POST"])
@@ -33,9 +33,9 @@ def login():
         session["user_id"] = user.user_id
         session["login"] = True
         # return user data
-        return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
+        return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password, ok=True)
     # doesn't match post data with user info in db
-    return ""
+    return jsonify(ok=False)
 
 
 @user_page.route("/edit/<id>", methods=["PATCH"])
@@ -53,15 +53,15 @@ def edit(id):
 def delete(id):
 
     if session.get("user_id") != id:
-        return ""
+        return jsonify(ok=False)
 
     user_service = UserService()
     error = user_service.delete(id)
-    if error == True:
+    if error:
         session.pop("user_id", None)
         session.pop("login", None)
-        return ""
-    return ""
+        return jsonify(ok=True)
+    return jsonify(ok=False)
 
 
 @user_page.route("/fetch", methods=["GET"])
@@ -92,11 +92,12 @@ def refetch():
 def logout(id):
 
     if session.get("user_id") != id:
-        return ""
+        return jsonify(ok=False)
 
     session.pop("user_id")
     session["login"] = False
-    return ""
+
+    return jsonify(ok=True)
 
 
 @user_page.route("/forgot_password", methods=["POST"])
@@ -107,10 +108,11 @@ def forgot_password():
     user = user_service.get_user_info_by_email(response["email"])
 
     if not user:
-        return ""
+        return jsonify(ok=False)
+
     user_service.send_reset_mail(user)
 
-    return ""
+    return jsonify(ok=True)
 
 
 @user_page.route("/is_valid_token/<token>", methods=["POST"])
@@ -119,7 +121,7 @@ def is_valid_token(token):
 
     user = user_service.reset_password_by_token(token)
     if user is None:
-        return ""
+        return jsonify(ok=False)
 
     return jsonify(ok=True)
 
@@ -131,23 +133,12 @@ def reset_password(token):
 
     user = user_service.reset_password_by_token(token)
     if user is None:
-        return ""
+        return jsonify(ok=False)
 
     result = user_service.register_new_password(user, form_data)
     if result:
-        return ""
-    return ""
-
-
-@user_page.route("/account_page", methods=["GET"])
-def account_page():
-
-    if request.method == "GET":
-        user_service = UserService()
-        user = user_service.get_user_info_by_user_id(session["user_id"])
-        if user:
-            return render_template("user/account_page.html", title="My Information", user=user)
-    return redirect(url_for("user_page.signup"))
+        return jsonify(ok=True)
+    return jsonify(ok=False)
 
 
 @user_page.route("/fetch_currency", methods=["GET"])
@@ -177,9 +168,9 @@ def register_currency(id):
     portfolio_service = PortfolioService()
     error = portfolio_service.register(
         id, request_data["symbol"].upper(), request_data["num_hold"])
-    if error == True:
-        return ""
-    return ""
+    if error:
+        return jsonify(ok=True)
+    jsonify(ok=False)
 
 
 @user_page.route("/edit_currency/<id>", methods=["PATCH"])
@@ -193,7 +184,7 @@ def edit_currency(id):
 
         return jsonify(json.loads(request.data))
 
-    return ""
+    return jsonify(ok=False)
 
 
 @user_page.route("/delete_currency/<id>/<currency>", methods=["DELETE"])
@@ -202,9 +193,9 @@ def delete_currency(id, currency):
     portfolio_service = PortfolioService()
     result = portfolio_service.delete_currency_data(id, currency.upper())
     if result:
-        return ""
+        return jsonify(ok=True)
 
-    return ""
+    return jsonify(ok=False)
 
 
 # Check login status
