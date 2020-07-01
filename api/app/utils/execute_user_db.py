@@ -14,7 +14,11 @@ class UserService():
         validator = UserCreateValidator()
 
         error = validator.validate(form_data)
-        if error != True:
+        if not error:
+            return error
+
+        error = validator.user_form_validation(form_data)
+        if not error:
             return error
 
         try:
@@ -32,6 +36,13 @@ class UserService():
         """
         Login if user was already registered
         """
+
+        validator = UserCreateValidator()
+
+        error = validator.user_form_validation(form_data)
+        if not error:
+            return error
+
         # check user is already existing in db
         return User.find_user_info(form_data["username"],
                                    form_data["email"],
@@ -44,7 +55,17 @@ class UserService():
         user = User.update_user_info(user_id)
 
         if not user:
-            return "Can't find user id"
+            return False
+
+        validator = UserCreateValidator()
+
+        error = validator.validate(form_data)
+        if not error:
+            return error
+
+        error = validator.user_form_validation(form_data)
+        if not error:
+            return error
 
         try:
             user.user_name = form_data["username"]
@@ -53,7 +74,7 @@ class UserService():
             db.session.commit()
         except SQLAlchemyError:
             db.session.rollback()
-            return "db error"
+            return False
 
         return True
 
@@ -95,7 +116,7 @@ class UserService():
         user = User.get_useid_by_email(email)
 
         if not user:
-            return "Can't find you email in our system. You must register first"
+            return False
         return user
 
     def send_reset_mail(self, user):
