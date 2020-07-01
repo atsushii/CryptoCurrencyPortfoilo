@@ -29,7 +29,7 @@ class ResetPasswordForm extends React.Component {
   };
 
   onSubmit = (formValue) => {
-    this.props.onSubmit(formValue);
+    this.props.onSubmit(formValue, this.props.token);
   };
 
   render() {
@@ -51,13 +51,6 @@ class ResetPasswordForm extends React.Component {
                   onSubmit={this.props.handleSubmit(this.onSubmit)}
                   className="user"
                 >
-                  <Field
-                    name="tempPassword"
-                    component={this.renderInput}
-                    label="Enter temp password"
-                    type="text"
-                  ></Field>
-
                   <Field
                     name="password"
                     component={this.renderInput}
