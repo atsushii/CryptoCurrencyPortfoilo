@@ -1,20 +1,26 @@
 import React from "react";
-import { resetPassword } from "../../actions";
+import { resetPassword, isValidToken } from "../../actions";
 import { connect } from "react-redux";
-import ForgetPasswordForm from "./ForgetPasswordForm";
+import ResetPasswordForm from "./ResetPasswordForm";
 
 class ResetPassword extends React.Component {
-  onSubmit = (formValue) => {
-    this.props.resetPassword(formValue);
+  componentDidMount() {
+    this.props.isValidToken(this.props.match.params.token);
+  }
+  onSubmit = (formValue, token) => {
+    this.props.resetPassword(formValue, token);
   };
 
   render() {
     return (
       <div>
-        <ForgetPasswordForm onSubmit={this.onSubmit} />
+        <ResetPasswordForm
+          onSubmit={this.onSubmit}
+          token={this.props.match.params.token}
+        />
       </div>
     );
   }
 }
 
-export default connect(null, { resetPassword })(ResetPassword);
+export default connect(null, { resetPassword, isValidToken })(ResetPassword);
