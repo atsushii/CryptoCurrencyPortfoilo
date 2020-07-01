@@ -7,6 +7,8 @@ import {
   DELETE_USER,
   REFETCH_USER,
   EDIT_USER,
+  FORGET_PASSWORD,
+  RESET_PASSWORD,
 } from "../actions/types";
 
 export default (state = {}, action) => {
@@ -34,6 +36,18 @@ export default (state = {}, action) => {
 
     case DELETE_USER:
       return _.omit(state, action.payload);
+
+    case FORGET_PASSWORD:
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
+
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        [action.payload.id]: action.payload,
+      };
 
     default:
       return state;
