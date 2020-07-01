@@ -18,9 +18,12 @@ import {
 
 export const signUp = (formValues) => async (dispatch) => {
   const response = await crypto.post("/signup", formValues);
-
-  dispatch({ type: SIGN_UP, payload: response.data });
-  history.push("/form/login");
+  if (!response.data) {
+    history.push("/form/signup");
+  } else {
+    dispatch({ type: SIGN_UP, payload: response.data });
+    history.push("/form/login");
+  }
 };
 
 export const login = (formValues) => async (dispatch) => {
@@ -28,12 +31,12 @@ export const login = (formValues) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data.ok) {
+  if (!response.data) {
     history.push("/form/login");
+  } else {
+    dispatch({ type: LOGIN, payload: response.data });
+    history.push(`/portfolio/${response.data.id}`);
   }
-
-  dispatch({ type: LOGIN, payload: response.data });
-  history.push(`/portfolio/${response.data.id}`);
 };
 
 export const logoutUser = (id) => async (dispatch) => {
@@ -41,12 +44,12 @@ export const logoutUser = (id) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data.ok) {
+  if (!response.data) {
     history.push(`/portfolio/${id}`);
+  } else {
+    dispatch({ type: LOGOUT, payload: id });
+    history.push("/form/login");
   }
-
-  dispatch({ type: LOGOUT, payload: id });
-  history.push("/form/login");
 };
 
 export const fetchUser = () => async (dispatch) => {
@@ -56,9 +59,9 @@ export const fetchUser = () => async (dispatch) => {
 
   if (!response.data) {
     history.push("/form/signup");
+  } else {
+    dispatch({ type: FETCH_USER, payload: response.data });
   }
-
-  dispatch({ type: FETCH_USER, payload: response.data });
 };
 
 export const editUser = (id, formValue) => async (dispatch) => {
@@ -68,10 +71,10 @@ export const editUser = (id, formValue) => async (dispatch) => {
 
   if (!response.data) {
     history.push(`/form/edit/${id}`);
+  } else {
+    dispatch({ type: EDIT_USER, payload: response.data });
+    history.push(`/portfolio/userAccount/${id}`);
   }
-
-  dispatch({ type: EDIT_USER, payload: response.data });
-  history.push(`/portfolio/userAccount/${id}`);
 };
 
 export const deleteUser = (id) => async (dispatch) => {
@@ -79,12 +82,13 @@ export const deleteUser = (id) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data.ok) {
+  console.log(response);
+  if (!response.data) {
     history.push(`/form/delete/${id}`);
+  } else {
+    dispatch({ type: DELETE_USER, payload: id });
+    history.push("/form/signup");
   }
-
-  dispatch({ type: DELETE_USER, payload: id });
-  history.push("/form/signup");
 };
 
 export const reFetchUser = () => async (dispatch) => {
@@ -94,9 +98,9 @@ export const reFetchUser = () => async (dispatch) => {
 
   if (!response.data) {
     history.push("/form/signup");
+  } else {
+    dispatch({ type: REFETCH_USER, payload: response.data });
   }
-
-  dispatch({ type: REFETCH_USER, payload: response.data });
 };
 
 export const fetchCurrency = () => async (dispatch) => {
@@ -106,9 +110,9 @@ export const fetchCurrency = () => async (dispatch) => {
 
   if (!response.data) {
     history.push("/form/signup");
+  } else {
+    dispatch({ type: FETCH_CURRENCY, payload: response.data });
   }
-
-  dispatch({ type: FETCH_CURRENCY, payload: response.data });
 };
 
 export const editCurrency = (id, formValue) => async (dispatch) => {
@@ -143,13 +147,13 @@ export const forgetPassword = (formValue) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data.ok) {
+  if (!response.data) {
     history.push("/form/forgetPassword");
+  } else {
+    dispatch({ type: FORGET_PASSWORD, payload: response.data });
+
+    history.push("/form/login");
   }
-
-  dispatch({ type: FORGET_PASSWORD, payload: response.data });
-
-  history.push("/form/login");
 };
 
 export const resetPassword = (formValues, token) => async (dispatch) => {
@@ -157,13 +161,13 @@ export const resetPassword = (formValues, token) => async (dispatch) => {
     withCredentials: true,
   });
 
-  if (!response.data.ok) {
+  if (!response.data) {
     history.push("/form/forgetPassword");
+  } else {
+    dispatch({ type: RESET_PASSWORD, payload: response.data });
+
+    history.push("/form/login");
   }
-
-  dispatch({ type: RESET_PASSWORD, payload: response.data });
-
-  history.push("/form/login");
 };
 
 export const isValidToken = (token) => async () => {
@@ -171,7 +175,7 @@ export const isValidToken = (token) => async () => {
     withCredentials: true,
   });
 
-  if (!response.data.ok) {
+  if (!response.data) {
     history.push("/form/forgetPassword");
   }
 };
