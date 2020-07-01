@@ -8,11 +8,7 @@ import history from "../../history";
 class DeleteUser extends React.Component {
   // get user information
   componentDidMount() {
-    if (!this.props.user) {
-      this.props.reFetchUser();
-    } else {
-      this.props.fetchUser(this.props.match.params.id);
-    }
+    this.props.fetchUser();
   }
 
   renderAction() {
@@ -24,7 +20,10 @@ class DeleteUser extends React.Component {
         >
           Delete Account
         </button>
-        <Link to="/form/signup" className="col-2">
+        <Link
+          to={`/portfolio/userAccount/${this.props.match.params.id}`}
+          className="col-2"
+        >
           Cancel
         </Link>
       </Fragment>
@@ -52,8 +51,6 @@ class DeleteUser extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state);
-
   return { user: state.user[ownProps.match.params.id] };
 };
 
