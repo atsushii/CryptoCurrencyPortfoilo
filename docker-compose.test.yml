@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile.test
+    ports:
+      - "5000:5000"
+    tty: true
+    volumes:
+      - ./api:/app/api/
+  mysql:
+    build: ./mysql/
+    volumes:
+      - ./mysql/test_mysql_data:/var/lib/mysql
+      - ./mysql/test_sqls:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    ports:
+      - "4306:3306"
+  client:
+    build: ./client/
+    stdin_open: true
+    volumes:
+      - "./client:/app/client/"
+      - "/app/client/node_modules"
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=test
+    links:
+      - web
