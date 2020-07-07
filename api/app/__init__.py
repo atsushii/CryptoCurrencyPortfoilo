@@ -35,6 +35,8 @@ def create_test_app():
     mail = Mail()
 
     app.config.from_object(TestConfig)
+    from app.views.views import user_page
+    app.register_blueprint(user_page)
     db.init_app(app)
     app.app_context().push()
     Migrate(app, db)
@@ -44,6 +46,3 @@ def create_test_app():
     manager.add_command('db', MigrateCommand)
 
     return app
-
-
-app = create_app()
