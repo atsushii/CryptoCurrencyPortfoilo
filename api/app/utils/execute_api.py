@@ -11,7 +11,6 @@ class API():
 
     def call_api(self, currency):
         url = self.api_key.format(",".join(currency))
-
         return json.load(urllib.request.urlopen(url))
 
     def data_process(self, currency_data, num_of_hold_currency):
@@ -21,8 +20,10 @@ class API():
             currency_dict = {}
             currency_dict["symbol"] = item["symbol"]
             currency_dict["price"] = float(item["price"])
+            currency_dict["num_hold"] = num
+            currency_dict["price_change_pct"] = item["1d"]["price_change_pct"]
+
             # compute total value
             total_value += currency_dict["price"] * num
-            currency_dict["price_change_pct"] = item["1d"]["price_change_pct"]
             currency_list.append(currency_dict)
         return currency_list, total_value
