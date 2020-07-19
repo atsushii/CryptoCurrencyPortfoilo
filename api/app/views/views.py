@@ -41,10 +41,13 @@ def login():
 @user_page.route("/edit/<id>", methods=["PATCH"])
 def edit(id):
 
+    if session.get("user_id") != int(id):
+        return ""
+
     user_service = UserService()
     response = user_service.update(json.loads(request.data), id)
     if response:
-        return jsonify(json.loads(request.data))
+        return request.data
 
     return ""
 
@@ -102,6 +105,11 @@ def logout(id):
 
 @user_page.route("/forgot_password", methods=["POST"])
 def forgot_password():
+
+    if not is_login():
+
+        return ""
+
     response = json.loads(request.data)
     user_service = UserService()
 
@@ -163,6 +171,10 @@ def fetch_currency():
 @user_page.route("/register_currency/<id>", methods=["POST"])
 def register_currency(id):
 
+    if not is_login():
+
+        return ""
+
     request_data = json.loads(request.data)
 
     portfolio_service = PortfolioService()
@@ -177,6 +189,10 @@ def register_currency(id):
 @user_page.route("/edit_currency/<id>", methods=["PATCH"])
 def edit_currency(id):
 
+    if not is_login():
+
+        return ""
+
     edit_data = json.loads(request.data)
     portfolio_service = PortfolioService()
     result = portfolio_service.update_currency_data(
@@ -190,6 +206,10 @@ def edit_currency(id):
 
 @user_page.route("/delete_currency/<id>/<currency>", methods=["DELETE"])
 def delete_currency(id, currency):
+
+    if not is_login():
+
+        return ""
 
     portfolio_service = PortfolioService()
     result = portfolio_service.delete_currency_data(id, currency.upper())
