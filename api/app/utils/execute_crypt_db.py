@@ -16,7 +16,7 @@ class PortfolioService():
         # return crypt and user data
         result = validator.validate(user_id, crypt_name)
         if not result:
-            return "Cant find currency name Try again"
+            return False
 
         try:
             # 0 user, 1 crypy
@@ -25,9 +25,10 @@ class PortfolioService():
             result[1].user_crypt.append(user_crypt)
             db.session.add(result[1])
             db.session.commit()
+
         except SQLAlchemyError:
             db.session.rollback()
-            return f"Alredy {crypt_name} in your portfolio"
+            return False
 
         return True
 
@@ -40,7 +41,7 @@ class PortfolioService():
 
         return result
 
-    def update_currency_data(self, user_id, currency_name, num_of_hold):
+    def update_currency_data(self, user_id, currency_name, num_hold):
         """
         update currency information
         """
@@ -54,7 +55,7 @@ class PortfolioService():
 
             for name, num in zip(user_data, num_data):
                 if name.crypt_name == currency_name:
-                    num.num_of_currency = num_of_hold
+                    num.num_of_currency = num_hold
                     break
             db.session.commit()
 
@@ -68,6 +69,8 @@ class PortfolioService():
         """
         Delete currency from portfolio
         """
+
+        delete_flag = False
         # get user info
         user = User.update_user_info(user_id)
         # get currency data
@@ -76,6 +79,11 @@ class PortfolioService():
             for i, name in enumerate(user_data):
                 if name.crypt_name == currency_name:
                     del user_data[i]
+                    delete_flag = True
+
+            if not delete_flag:
+                return False
+
             db.session.add(user)
             db.session.commit()
         except SQLAlchemyError:
