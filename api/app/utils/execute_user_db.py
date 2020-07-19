@@ -3,6 +3,7 @@ from app.models.user_db import User
 from app.utils.user_create_validation import UserCreateValidator
 from sqlalchemy.exc import SQLAlchemyError
 from flask_mail import Message
+import re
 
 
 class UserService():
@@ -138,7 +139,17 @@ class UserService():
         """
         Insert user data to User table
         """
-        validator = UserCreateValidator()
+        # password
+        if len(form_data["password"]) < 8:
+            return False
+        elif not re.search("[0-9]", form_data["password"]):
+            return False
+        elif not re.search("[A-Z]", form_data["password"]):
+            return False
+        elif not re.search("[@_!#$%^&*()<>?/\|}{~:]", form_data["password"]):
+            return False
+        elif form_data["password"] != form_data["confirmPassword"]:
+            return False
 
         try:
             user.user_password = form_data["password"]
