@@ -44,9 +44,13 @@ PyMySQL = "*"
 Flask-Migrate = "*"
 APScheduler = "*"
 Flask-Bootstrap4 = "*"
+itsdangerous = "==1.1.0"
+Flask-Mail = "==0.9.1"
+Flask-Cors = "*"
+Flask-Session = "*"
 
 [requires]
 python_version = "3.7"
 
 [scripts]
-start = "flask run -h 0.0.0.0"
+start = "python -m unittest app/tests/test_user_create_validate.py"

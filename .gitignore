@@ -1,2 +1,4 @@
 dataset/
 mysql/
+api/__pycache__
+.coverage
