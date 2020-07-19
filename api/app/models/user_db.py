@@ -29,11 +29,11 @@ class User(db.Model):
         exist_user = User.query.filter_by(
             user_name=name).first()
         if not exist_user is None:
-            return "User name"
+            return False
         exist_email = User.query.filter_by(
             user_mail=email).first()
         if not exist_email is None:
-            return "mail address"
+            return False
 
         return True
 
