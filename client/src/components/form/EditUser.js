@@ -6,7 +6,7 @@ import UserForm from "./UserForm";
 
 class EditUser extends React.Component {
   componentDidMount() {
-    this.props.fetchUser(this.props.match.params.id);
+    this.props.fetchUser();
   }
 
   onSubmit = (formValues) => {

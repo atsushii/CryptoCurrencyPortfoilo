@@ -3,7 +3,7 @@ import { forgetPassword } from "../../actions";
 import { connect } from "react-redux";
 import ForgetPasswordForm from "./ForgetPasswordForm";
 
-class forgetPassword extends React.Component {
+class ForgetPassword extends React.Component {
   onSubmit = (formValue) => {
     this.props.forgetPassword(formValue);
   };
@@ -17,4 +17,4 @@ class forgetPassword extends React.Component {
   }
 }
 
-export default connect(null, { forgetPassword })(forgetPassword);
+export default connect(null, { forgetPassword })(ForgetPassword);

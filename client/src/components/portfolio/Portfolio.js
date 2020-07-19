@@ -2,13 +2,13 @@ import React from "react";
 import Header from "./Header";
 import Content from "./Content";
 import Footer from "./Footer";
-import { fetchUser, fetch_currency } from "../../actions";
+import { fetchUser, fetchCurrency } from "../../actions";
 import { connect } from "react-redux";
 
 class Portfolio extends React.Component {
   componentDidMount() {
-    this.props.fetchUser(this.props.match.params.id);
-    this.props.fetch_currency(this.props.match.params.id);
+    this.props.fetchUser();
+    this.props.fetchCurrency();
   }
 
   render() {
@@ -17,10 +17,14 @@ class Portfolio extends React.Component {
     }
     return (
       <div>
-        <Header username={this.props.user.username} />
+        <Header
+          username={this.props.user.username}
+          userId={this.props.user.id}
+        />
         <Content
-          currency_list={this.props.portfolio.currency_list}
-          total_value={this.props.portfolio.total_value}
+          currencyList={this.props.portfolio.currency_list}
+          totalValue={this.props.portfolio.total_value}
+          userId={this.props.user.id}
         />
         <Footer />
       </div>
@@ -35,6 +39,6 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps, { fetchUser, fetch_currency })(
+export default connect(mapStateToProps, { fetchUser, fetchCurrency })(
   Portfolio
 );

@@ -1,25 +1,26 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class Content extends React.Component {
   renderTableData() {
-    return Array.from(this.props.currency_list).map((currency) => {
+    return Array.from(this.props.currencyList).map((currency) => {
       const { symbol, num_hold, price, price_change_pct } = currency;
       return (
-        <tr>
+        <tr key={symbol}>
           <td>
             {symbol}
-            <a
+            <Link
+              to={`editCurrency/${this.props.userId}/${symbol}/`}
               className="small"
-              href="{{ url_for('user_page.update_currency', currency_name=currency['symbol']) }}"
             >
-              Add
-            </a>
-            <a
+              Edit
+            </Link>
+            <Link
+              to={`deleteCurrency/${this.props.userId}/${symbol}`}
               className="small"
-              href="{{ url_for('user_page.delete_currency', currency_name=currency['symbol']) }}"
             >
               Delete
-            </a>
+            </Link>
           </td>
           <td>{num_hold}</td>
           <td>${price}</td>
@@ -33,15 +34,18 @@ class Content extends React.Component {
     return (
       <div className="container-fluid">
         <h1 className="h3 mb-2 text-gray-800">
-          Total Value: {this.props.total_value}$
+          Total Value: {this.props.totalValue}$
         </h1>
 
         <div className="card shadow mb-4">
           <div className="card-header py-3">
             <h6 className="m-0 font-weight-bold text-primary">
-              <a href="{{ url_for('user_page.register_currency') }}">
-                Register Currency
-              </a>
+              <Link
+                to={`registerCurrency/${this.props.userId}`}
+                className="small"
+              >
+                Register New Currency
+              </Link>
             </h6>
           </div>
           <div className="card-body">
