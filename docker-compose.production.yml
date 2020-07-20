@@ -10,7 +10,8 @@ services:
     volumes:
       - ./api:/app/api/
     environment:
-      FLASK_APP: run.py
+      - FLASK_APP=run.py
+      - FLASK_ENV=production
   mysql:
     build: ./mysql/
     volumes:
@@ -29,6 +30,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
     links:
       - web
