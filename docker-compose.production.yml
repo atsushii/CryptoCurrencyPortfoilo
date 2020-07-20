@@ -2,8 +2,9 @@ version: "3"
 
 services:
   web:
-    build: ./api/
-    dockerfile: Dockerfile.production
+    build:
+      context: ./api/
+      dockerfile: Dockerfile.production
     ports:
       - "8000:8000"
     tty: true
