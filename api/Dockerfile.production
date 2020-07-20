@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 RUN apt-get update -y
-RUN apt-get install python3-pip- y
+RUN apt-get install python3-pip -y
 RUN apt-get install gunicorn3 -y
 
 WORKDIR /app/api
@@ -9,7 +9,7 @@ COPY . /app/api/
 
 RUN pip3 install -r requirements.txt
 
-CMD [ "gunicorn3", "-b", "0.0.0.0:8000", "--workers=5"]
+CMD [ "gunicorn3", "-b", "0.0.0.0:8000", "api:api", "--workers=5"]
 
 
 
