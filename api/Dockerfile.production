@@ -9,7 +9,7 @@ COPY . /app/api/
 
 RUN pip3 install -r requirements.txt
 
-CMD [ "gunicorn3", "-b", "0.0.0.0:8000", "api:api", "--workers=5"]
+CMD [ "gunicorn3", "-b", "0.0.0.0:8000", "run:create_app()", "--workers=5"]
 
 
 
