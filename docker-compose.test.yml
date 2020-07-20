@@ -10,6 +10,9 @@ services:
     tty: true
     volumes:
       - ./api:/app/api/
+    environment:
+      - FLASK_CONFIG=test
+      - FLASK_ENV=test
   mysql:
     build: ./mysql/
     volumes:
