@@ -2,14 +2,17 @@ version: "3"
 
 services:
   web:
-    build: ./api/
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
     tty: true
     volumes:
       - ./api:/app/api/
     environment:
-      FLASK_APP: run.py
+      - FLASK_APP=run.py
+      - FLASK_ENV=development
   mysql:
     build: ./mysql/
     volumes:
