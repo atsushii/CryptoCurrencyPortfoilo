@@ -7,12 +7,22 @@ services:
       dockerfile: Dockerfile.production
     ports:
       - "8000:8000"
+    network_mode: host
     tty: true
     volumes:
       - ./api:/app/api/
     environment:
       - FLASK_APP=run.py
       - FLASK_ENV=production
+
+  nginx:
+    build: ./nginx/
+    container_name: nginx
+    environment:
+      - SERVER_NAME=0.0.0.0
+    restart: always
+    network_mode: host
+
   mysql:
     build: ./mysql/
     volumes:
