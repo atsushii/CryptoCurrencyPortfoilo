@@ -1,6 +1,6 @@
 import unittest
 from app.utils.crypt_validation import CryptValidation
-from app import db, create_test_app
+from app import db, create_app
 from app.models.user_db import User
 from app.models.crypt_db import Crypt
 from app.models.user_crypt_db import UserCrypt
@@ -12,7 +12,7 @@ class TestCryptoValidator(unittest.TestCase):
         print("setUp test env")
 
         # init test env
-        self.app = create_test_app()
+        self.app = create_app()
         db.create_all()
 
         # init user data

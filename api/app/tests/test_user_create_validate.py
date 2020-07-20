@@ -1,6 +1,6 @@
 import unittest
 from app.utils.user_create_validation import UserCreateValidator
-from app import db, create_test_app
+from app import db, create_app
 from app.models.user_db import User
 
 
@@ -9,7 +9,7 @@ class TestUserValidate(unittest.TestCase):
     def setUp(self):
         print("setUp test env")
         # init test env
-        self.app = create_test_app()
+        self.app = create_app()
         db.create_all()
         self.user_create_validator = UserCreateValidator()
         # init user data

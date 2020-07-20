@@ -1,5 +1,5 @@
 import unittest
-from app import db, create_test_app
+from app import db, create_app
 from app.models.crypt_db import Crypt
 
 
@@ -9,7 +9,7 @@ class TestCryptoDB(unittest.TestCase):
         print("setUp test env")
 
         # init test env
-        self.app = create_test_app()
+        self.app = create_app()
         db.create_all()
 
         self.crypto = Crypt()

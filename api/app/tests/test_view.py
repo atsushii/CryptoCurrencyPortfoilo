@@ -1,5 +1,5 @@
 import unittest
-from app import db, create_test_app
+from app import db, create_app
 from app.models.user_db import User
 from app.models.crypt_db import Crypt
 from app.models.user_crypt_db import UserCrypt
@@ -14,7 +14,7 @@ class TestApis(unittest.TestCase):
         print("setUp test env")
 
         # init test env
-        app = create_test_app()
+        app = create_app()
         self.client = app.test_client()
 
         # init session

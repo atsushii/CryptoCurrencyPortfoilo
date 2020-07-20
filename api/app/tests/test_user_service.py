@@ -1,6 +1,6 @@
 import unittest
 from app.utils.execute_user_db import UserService
-from app import db, create_test_app
+from app import db, create_app
 from app.models.user_db import User
 
 
@@ -9,7 +9,7 @@ class TestUserService(unittest.TestCase):
     def setUp(self):
         print("setUp test env")
         # init test env
-        self.app = create_test_app()
+        self.app = create_app()
         db.create_all()
         self.user_service = UserService()
 

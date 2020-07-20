@@ -1,6 +1,6 @@
 import unittest
 from app.utils.execute_api import API
-from app import db, create_test_app
+from app import db, create_app
 
 
 class TestApiCall(unittest.TestCase):
@@ -9,7 +9,7 @@ class TestApiCall(unittest.TestCase):
         print("setUp test env")
 
         # init test env
-        self.app = create_test_app()
+        self.app = create_app()
 
         self.api = API()
 
