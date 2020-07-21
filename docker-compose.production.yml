@@ -5,26 +5,20 @@ services:
     build:
       context: ./api/
       dockerfile: Dockerfile.production
-    container_name: flaskapp
+    container_name: backend
+    expose:
+      - "5000"
     tty: true
     volumes:
       - ./api:/app/api/
     environment:
       - FLASK_APP=run.py
       - FLASK_ENV=production
-
-  nginx:
-    build: ./nginx/
-    container_name: nginx
-    ports:
-      - "80:80"
-    environment:
-      - SERVER_NAME=0.0.0.0
     restart: always
-    network_mode: host
 
   mysql:
     build: ./mysql/
+    container_name: mysql
     volumes:
       - ./mysql/prod_mysql_data:/var/lib/mysql
       - ./mysql/prod_sqls:/docker-entrypoint-initdb.d
@@ -32,19 +26,21 @@ services:
       MYSQL_ROOT_PASSWORD: "root"
     ports:
       - "4306:3306"
+
   client:
-    build: ./client/
+    build:
+      context: ./client/
+      dockerfile: Dockerfile.production
+    container_name: frontend
+    network_mode: host
     stdin_open: true
+    environment:
+      - SERVER_NAME=0.0.0.0
+      - NODE_ENV=production
     volumes:
       - "./client:/app/client/"
       - "/app/client/node_modules"
     ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=production
+      - "80:80"
     links:
       - web
-
-networks:
-  default:
-    driver: bridge
