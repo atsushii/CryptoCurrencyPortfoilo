@@ -32,7 +32,6 @@ services:
       context: ./client/
       dockerfile: Dockerfile.production
     container_name: frontend
-    network_mode: host
     stdin_open: true
     environment:
       - SERVER_NAME=0.0.0.0
@@ -42,5 +41,3 @@ services:
       - "/app/client/node_modules"
     ports:
       - "80:80"
-    links:
-      - web
