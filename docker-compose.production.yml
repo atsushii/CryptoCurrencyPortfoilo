@@ -5,9 +5,7 @@ services:
     build:
       context: ./api/
       dockerfile: Dockerfile.production
-    ports:
-      - "8000:8000"
-    network_mode: host
+    container_name: flaskapp
     tty: true
     volumes:
       - ./api:/app/api/
@@ -18,6 +16,8 @@ services:
   nginx:
     build: ./nginx/
     container_name: nginx
+    ports:
+      - "80:80"
     environment:
       - SERVER_NAME=0.0.0.0
     restart: always
@@ -44,3 +44,7 @@ services:
       - NODE_ENV=production
     links:
       - web
+
+networks:
+  default:
+    driver: bridge
