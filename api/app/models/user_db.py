@@ -65,12 +65,12 @@ class User(db.Model):
 
     @classmethod
     def get_reset_token(cls, user_id, expires_sec=300):
-        s = Serializer(app.Config.SECRET_KEY, expires_sec)
+        s = Serializer(app.config.TestConfig.SECRET_KEY, expires_sec)
         return s.dumps({"user_id": user_id}).decode("utf-8")
 
     @staticmethod
     def vertify_reset_token(token):
-        s = Serializer(app.Config.SECRET_KEY)
+        s = Serializer(app.config.TestConfig.SECRET_KEY)
 
         try:
             user_id = s.loads(token)["user_id"]
