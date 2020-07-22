@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage("Build") {
             steps {
-                sh " ./build.sh"
+                sh " /var/jenkins_home/workspace/cryptocurrency-portfolio-ci-cd-pipline/pipeline/build.sh"
             }
         }
         // stage("Test") {
