@@ -6,12 +6,6 @@ pipeline {
             steps {
                 sh " /var/jenkins_home/workspace/cryptocurrency-portfolio-ci-cd-pipline/pipeline/build.sh"
             }
-        }
-        // stage("Test") {
-        //     steps {
-        //         sh "docker-compose exec web bash"
-        //         sh " python -m unittest app/tests/*"
-        //     }
-    
+        }    
     }
 }
