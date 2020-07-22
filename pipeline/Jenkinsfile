@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Build") {
+            steps {
+                sh " ./build.sh"
+            }
+        }
+        // stage("Test") {
+        //     steps {
+        //         sh "docker-compose exec web bash"
+        //         sh " python -m unittest app/tests/*"
+        //     }
+        }
+
+    }
+}
