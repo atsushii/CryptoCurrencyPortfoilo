@@ -12,7 +12,6 @@ pipeline {
         //         sh "docker-compose exec web bash"
         //         sh " python -m unittest app/tests/*"
         //     }
-        }
-
+    
     }
 }
