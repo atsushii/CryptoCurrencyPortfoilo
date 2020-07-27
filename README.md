@@ -1,7 +1,9 @@
 # CryptoCurrencyPortfoilo
 
 # Overview
-This is a cryptocurrency portfolio. It is able to keep user information and currency data in MySQL.
+This is a cryptocurrency portfolio. It is able to store user information and currency data in MySQL. Then users can check the current currency price in realtime.
+I call nomics API when users go to the portfolio page to get realtime currency data.
+
 
 # Stack
 ・ Python
