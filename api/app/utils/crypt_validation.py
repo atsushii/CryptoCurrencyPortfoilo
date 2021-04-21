@@ -2,7 +2,7 @@ from app.models.crypt_db import Crypt
 from app.models.user_db import User
 
 
-class CryptValidation():
+class CryptValidation:
     """
     Validate input data
     """
