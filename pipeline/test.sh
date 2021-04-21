@@ -4,5 +4,5 @@ echo "******************************"
 echo "********** Run test **********"
 echo "******************************"
 
-# docker-compose exec web  python -m unittest app/tests/*
+python -m unittest app/tests/*
 

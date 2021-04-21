@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 echo "***********************************"
 echo "**** Building Docker test image ***"
 echo "***********************************"
-#tesr
-docker-compose -f ../docker-compose.test.yml build
+#tes4
+docker build -f ../api/Dockerfile.test -t dockertest .
+
 
