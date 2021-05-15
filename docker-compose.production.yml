@@ -8,6 +8,7 @@ services:
     container_name: backend
     expose:
       - "5000"
+    command: bash -c "flask db migrate && flask db upgrade"
     tty: true
     volumes:
       - ./api:/app/api/
@@ -23,7 +24,7 @@ services:
       - ./mysql/prod_mysql_data:/var/lib/mysql
       - ./mysql/prod_sqls:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: "****"
+      MYSQL_ROOT_PASSWORD: "root"
     ports:
       - "4306:3306"
 
