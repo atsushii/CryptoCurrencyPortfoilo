@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, MigrateCommand
+from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
 from flask_session import Session
 from flask_mail import Mail
@@ -15,10 +15,10 @@ mail = Mail()
 def create_app():
 
     app = Flask(__name__)
-    comfig_name = os.environ.get('FLASK_ENV')
+    config_name = os.environ.get('FLASK_ENV')
 
     # dev and prod environment
-    if comfig_name == "development":
+    if config_name == "development":
         from app.views.views import user_page
         app.config.from_object(DevelopmentConfig)
         cors = CORS(app, supports_credentials=True)
@@ -34,7 +34,7 @@ def create_app():
 
         return app
 
-    elif comfig_name == "production":
+    elif config_name == "production":
 
         from app.views.views import user_page
         app.config.from_object(ProductionConfig)
@@ -61,7 +61,7 @@ def create_app():
     Migrate(app, db)
     mail.init_app(app)
 
-    manager = Manager(app)
-    manager.add_command('db', MigrateCommand)
+    # manager = Manager(app)
+    # manager.add_command('db', MigrateCommand)
 
     return app
