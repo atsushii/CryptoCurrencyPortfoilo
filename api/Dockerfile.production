@@ -7,9 +7,12 @@ RUN apt-get install gunicorn3 -y
 WORKDIR /app/api
 COPY . /app/api/
 
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
 RUN pip3 install -r requirements.txt
 
-CMD [ "gunicorn3", "-b", "0.0.0.0:5000", "run:create_app()", "--workers=5"]
+CMD ["gunicorn3", "-b", "0.0.0.0:5000", "run:create_app()", "--workers=5"]
 
 
 
