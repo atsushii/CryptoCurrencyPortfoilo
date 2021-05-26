@@ -29,6 +29,8 @@ def create_app():
         from app.utils.execute_user_db import db
         from app.utils.execute_crypt_db import db
         db.init_app(app)
+        with app.app_context():
+            db.create_all()
         Migrate(app, db)
         mail.init_app(app)
 
@@ -51,17 +53,17 @@ def create_app():
 
         return app
 
-    # test environment
-    db = SQLAlchemy()
-    app.config.from_object(TestConfig)
-    from app.views.views import user_page
-    app.register_blueprint(user_page)
-    db.init_app(app)
-    app.app_context().push()
-    Migrate(app, db)
-    mail.init_app(app)
+    else:
+        db = SQLAlchemy()
+        app.config.from_object(TestConfig)
+        from app.views.views import user_page
+        app.register_blueprint(user_page)
+        db.init_app(app)
+        app.app_context().push()
+        Migrate(app, db)
+        mail.init_app(app)
 
-    # manager = Manager(app)
-    # manager.add_command('db', MigrateCommand)
+        # manager = Manager(app)
+        # manager.add_command('db', MigrateCommand)
 
     return app
