@@ -6,7 +6,7 @@ from app.utils.crypt_validation import CryptValidation
 from sqlalchemy.exc import SQLAlchemyError
 
 
-class PortfolioService():
+class PortfolioService:
 
     def register(self, user_id, crypt_name, num_of_currency):
         """
