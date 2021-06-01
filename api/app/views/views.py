@@ -12,6 +12,7 @@ user_page = Blueprint("user_page", __name__,
                       template_folder="templates")
 
 
+
 @user_page.route("/signup", methods=["POST"])
 def signup():
     # duplicete check user_name and user_mail
@@ -30,8 +31,10 @@ def login():
     user = user_service.login(json.loads(request.data))
 
     if user:
-        session["user_id"] = user.user_id
-        session["login"] = True
+        session['user_id'] = user.user_id
+        session['login'] = True
+
+        print(session)
         # return user data
         return jsonify(id=user.user_id, username=user.user_name, mail=user.user_mail, password=user.user_password)
     # doesn't match post data with user info in db
@@ -151,7 +154,6 @@ def reset_password(token):
 
 @user_page.route("/fetch_currency", methods=["GET"])
 def fetch_currency():
-
     if not is_login():
 
         return ""
@@ -221,4 +223,4 @@ def delete_currency(id, currency):
 
 # Check login status
 def is_login():
-    return session.get("login")
+    return session["login"]
