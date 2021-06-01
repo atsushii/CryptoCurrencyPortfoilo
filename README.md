@@ -20,8 +20,6 @@ I call nomics API when users go to the portfolio page to get realtime currency d
 
 ・ Docker
 
-・ Jenkins
-
 # Next Step
 ・ Apply machine learning to forcast future BTC price
 
