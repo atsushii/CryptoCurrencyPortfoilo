@@ -2,11 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS, cross_origin
-from flask_session import Session
 from flask_mail import Mail
 from flask_script import Manager
 from app.config import DevelopmentConfig, TestConfig, ProductionConfig
 import os
+from flask_session import Session
 
 db = SQLAlchemy()
 mail = Mail()
@@ -21,7 +21,6 @@ def create_app():
     if config_name == "development":
         from app.views.views import user_page
         app.config.from_object(DevelopmentConfig)
-        cors = CORS(app, supports_credentials=True)
         app.register_blueprint(user_page)
         from app.models.user_db import db
         from app.models.crypt_db import db
@@ -33,6 +32,8 @@ def create_app():
             db.create_all()
         Migrate(app, db)
         mail.init_app(app)
+        Session(app)
+        CORS(app, supports_credentials=True)
 
         return app
 
@@ -40,7 +41,7 @@ def create_app():
 
         from app.views.views import user_page
         app.config.from_object(ProductionConfig)
-        cors = CORS(app, supports_credentials=True)
+        CORS(app, supports_credentials=True)
         app.register_blueprint(user_page)
         from app.models.user_db import db
         from app.models.crypt_db import db
